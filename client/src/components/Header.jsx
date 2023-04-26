@@ -70,7 +70,7 @@ const Header = () => {
     if (windowSize[0] > 567) {
       setShowLogo(true);
     }
-    return () => setShowInput(false);
+  
   }, [windowSize]);
 
   useEffect(() => {
