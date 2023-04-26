@@ -1,0 +1,15 @@
+const allowedOrigin = ["http://localhost:5173", "https://typique.onrender.com", "http://192.168.1.65:5173"];
+
+const corsOptions = {
+    origin : (origin, callback) => {
+        if(allowedOrigin.indexOf(origin) !== -1 || !origin){
+            callback(null, true)
+        }else{
+            callback(new Error(`Blocked by CORS Policy`))
+        }
+    },
+    credentials : true,
+    optionSuccessStatus : 200
+}
+
+module.exports = corsOptions;

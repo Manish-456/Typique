@@ -1,0 +1,18 @@
+const {
+  MONGO_URI,
+  PORT,
+  DEBUG_MODE,
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  EMAIL,
+  PASSWORD,
+} = process.env;
+module.exports = {
+  MONGO_URI,
+  PORT,
+  DEBUG_MODE,
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  EMAIL,
+  PASSWORD,
+};

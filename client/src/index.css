@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: hsl(238, 50%, 38%);
+  --light-gray: rgb(143, 138, 138);
+  --text-color: hsl(0, 12%, 90%);
+  --success: hsl(133, 100%, 36%);
+  --primary-hover: hsl(238, 39%, 47%);
+  --success-hover: hsl(133, 43%, 59%);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  min-height: 100vh;
+  width: 100%;
+  font-family: "Bai Jamjuree", sans-serif;
+  
+
+}
+.glass {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.success {
+  @apply px-3 py-2 rounded-md border border-[var(--success)] text-[var(--light-gray)] font-semibold;
+}
+.success:hover {
+  background-color: var(--success);
+  color: var(--text-color);
+}
+.primary {
+  @apply px-3 py-2 rounded-md border border-[var(--primary)] text-[var(--light-gray)] font-semibold;
+}
+.primary:hover {
+  background-color: var(--primary);
+  color: var(--text-color);
+}
+
+/* Might be changed on future */
+
+
+.primary-btn {
+  @apply px-9 py-2  rounded-md border border-[var(--primary)]  font-semibold;
+}
+.primary-btn {
+  background-color: var(--primary);
+  color: var(--text-color);
+}
+.primary-btn:hover {
+  background-color: var(--primary-hover);
+}
+.secondary-btn {
+  @apply px-9 py-2  rounded-md border border-[var(--success)]  font-semibold;
+}
+.secondary-btn {
+  background-color: var(--success);
+  color: var(--text-color);
+}
+.secondary-btn:hover {
+  background-color: var(--success-hover);
+}
+
+.desktop-menu {
+  @apply md:flex gap-10 items-center hidden;
+}
+/* .mobile-menu {
+  @apply flex gap-10 items-center;
+} */
+
+@media (max-width: 830px) {
+  .mobile-menu {
+    
+    position: fixed;
+    z-index: 999;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.3s ease-in;
+    transform: translateX(300px);
+    font-size: 20px;
+    font-weight: bold;
+    padding: 30px;
+  }
+}
+.left-side{
+  flex : 2;
+}
+.right-side{
+  flex : 1
+}
+
+.left-container{
+  flex : 2;
+}
+.right-container{
+  flex : 1
+}
+
+.img-animation{
+  -moz-transform:none;
+-webkit-transform:none;
+-o-transform:none;
+-ms-transform:none;
+transform:none;
+}
+.img-animation:hover{
+  -moz-transform: scale(1.1);
+-webkit-transform: scale(1.1);
+-o-transform: scale(1.1);
+-ms-transform: scale(1.1);
+transform: scale(1.1);
+
+}
+button:disabled{
+@apply bg-gray-400
+}
+@media (max-width : 530px){
+  .mobile-menu {
+   
+    position: fixed;
+    z-index: 999;
+    height: 100vh;
+    top: 0px;
+    right: 0;
+    width: 140%;
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.3s ease-in;
+    transform: translateX(300px);
+    font-size: 20px;
+    font-weight: bold;
+    padding: 30px;
+    overflow-y: auto;
+  }
+}
+
+.primary-btn:disabled, .secondary-btn:disabled{
+  @apply bg-gray-500 cursor-not-allowed
+}
+
+ /* ::-webkit-scrollbar{
+  width : 5px;
+  background-color: rgb(207, 203, 203);
+}  */
+.jodit-container:not(.jodit_inline) .jodit-workplace {
+ background-color: azure;
+ color: black;
+  border: 0 solid #dadada;
+  max-height: 100%;
+}
