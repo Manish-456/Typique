@@ -1,4 +1,4 @@
-const allowedOrigin = ["http://localhost:5173", "https://typique.onrender.com", "http://192.168.1.65:5173"];
+const allowedOrigin = [ "https://typique.onrender.com"];
 
 const corsOptions = {
     origin : (origin, callback) => {

@@ -26,7 +26,7 @@ const userSockets = {};
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: `https://typique.onrender.com`,
   },
 });
 
