@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 const Footer = ({setEmail, id}) => {
   const {theme} = useContext(ThemeContext)
   const [userEmail, setUserEmail] = useState("");
+
   const handleSendEmail = () => {
     if(userEmail){
       setEmail(userEmail)
@@ -11,8 +12,10 @@ const Footer = ({setEmail, id}) => {
     }
 
   }
+
+
   return (
-    <footer className={`bg-[#f3f3ff]  mt-10 ${theme.primary}`}>
+    <footer  className={`bg-[#f3f3ff]  mt-10 ${theme.primary}`}>
 
       <div className='md:max-w-7xl max-w-[100rem] items-center md:flex-row flex-col gap-4 flex justify-between mx-auto p-6 md:px-4'>
         <div className="left ">

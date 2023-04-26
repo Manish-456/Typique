@@ -5,7 +5,7 @@ const useInfiniteScroll = (setBlogs, setPage) => {
     const handleInfiniteScroll = async() => {
         try {
       
-           if( window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.offsetHeight ){
+           if( window.innerHeight + document.documentElement.scrollTop + 1 > document.documentElement.offsetHeight -  325){
              setPage(prev => prev + 1);
            }
           } catch (error) {

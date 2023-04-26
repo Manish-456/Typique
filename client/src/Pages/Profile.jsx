@@ -25,7 +25,7 @@ const Profile = () => {
   const [loadedBlogIds, setLoadedBlogIds] = useState(new Set());
 
   const [user, setUser] = useState(null)
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
 
 
 

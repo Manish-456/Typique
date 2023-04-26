@@ -63,6 +63,7 @@ const Header = () => {
   const handleShowInput = () => {
     setShowInput((prev) => !prev);
     setShowLogo((prev) => !prev);
+    setIsFocused(false)
   };
 
   useEffect(() => {
@@ -104,7 +105,7 @@ const Header = () => {
   };
   let imgClass = "sm:w-[30%] w-[56%] md:w-[100%]";
   if (!id) {
-    imgClass = "w-[60%]";
+    imgClass = "w-[50px] md:w-[100px]";
   }
   const catLink = NavContent?.slice(1).map((nav) => (
     <li key={nav?.id} className={""}>
@@ -164,29 +165,16 @@ const Header = () => {
     setIsFocused(true);
   };
 
-  const handleBlur = (e) => {
-    if (!searchResultsRef?.current?.contains(e.relatedTarget)) {
-      setIsFocused(false);
-    }
-  };
 
-  useEffect(() => {
-    const inpSearch = inpSearchRef.current;
-    inpSearch?.addEventListener("focus", handleFocus);
-    inpSearch?.addEventListener("blur", handleBlur);
 
-    return () => {
-      inpSearch?.removeEventListener("focus", handleFocus);
-      inpSearch?.removeEventListener("blur", handleBlur);
-    };
-  }, [inpSearchRef]);
 
+  
   const handleChange = (e) => {
     startTransition(() => {
       setSearchText(e.target.value);
     });
   };
-
+  ToggleMenu(inpSearchRef, setIsFocused)
   return (
     <header
       className={`${theme.secondary} w-full sticky z-[999] top-0 shadow-lg`}
@@ -204,22 +192,23 @@ const Header = () => {
           )}
           {/* Links */}
           {id && (
-            <div className={`${divBox} relative   flex gap-2 mr-4 p-4`}>
+            <div ref={inpSearchRef} className={`${divBox} relative   flex gap-2 mr-4 p-4`}>
               <input
-                type="search"
-                onKeyDown={handleSearch}
-                value={searchText}
-                ref={inpSearchRef}
-                onChange={handleChange}
-                placeholder="Search by keywords"
-                className={` ${searchBox} w-[80%] shadow-md p-1 rounded-xl outline-none border-none focus:outline-blue-400 border bg-transparent border-gray-400 mx-auto`}
+                     type="search"
+                     onKeyDown={handleSearch}
+                     value={searchText}
+                     
+                     onChange={handleChange}
+                 
+                     placeholder="Search by keywords"
+                     className={` ${searchBox} w-[80%] shadow-md p-1 rounded-xl outline-none border-none focus:outline-blue-400 border bg-transparent border-gray-400 mx-auto`}
+                     onFocus={handleFocus}
               />
 
               {isFocused && (
                 <div
                   ref={searchResultsRef}
-                  onMouseEnter={() => setIsFocused(true)}
-                  onMouseLeave={() => setIsFocused(false)}
+               
                   className={`fixed  top-16 ${theme?.secondary} md:w-[35%] w-[50%] ml-[3%]`}
                 >
                   {blogResults}

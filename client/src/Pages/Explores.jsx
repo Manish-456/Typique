@@ -17,7 +17,7 @@ const Explores = () => {
 
  const query = params.get('blog');
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const { data, isError } = useGetBlogsQuery(query ? {
     blog : query
   } : {page : page, size : 3});
