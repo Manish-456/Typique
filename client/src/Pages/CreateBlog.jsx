@@ -75,7 +75,7 @@ const CreateBlog = () => {
 
       setFile(fileName);
     } catch (error) {
-      console.log(error);
+
     }
   };
 

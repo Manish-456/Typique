@@ -11,7 +11,7 @@ const errorHandler = require("./middleware/errorHandler");
 const authRoute = require("./routes/auth");
 const blogRoute = require("./routes/blog");
 const userRoute = require("./routes/user");
-const commentRoute = require("./routes/comment");
+
 const notificationRoute = require("./routes/notifications");
 const path = require("path");
 
@@ -87,7 +87,7 @@ app.post("/upload", upload.single("file"), (_, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/blog", blogRoute);
 app.use("/api/user", userRoute);
-app.use("/api/comment", commentRoute);
+
 app.use("/api/notification", notificationRoute);
 
 app.use(errorHandler);

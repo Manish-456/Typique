@@ -178,7 +178,7 @@ const BlogController = {
     if (blog?.userId.toString() === req.id) {
       if (image) {
         if (image !== blog.image) {
-          fs.unlink(`${filePath}/${blog.image}`, async (err, result) => {
+          fs.unlink(`${filePath}/${blog.image}`, async (err, _) => {
             if (err) console.log(err);
             console.log("record cleared");
           });
@@ -270,7 +270,7 @@ const BlogController = {
       commentId: comment[0]._id,
     });
     let not = await newNotification.save();
-    console.log(not);
+   
     return res.json("Commented successfully");
   },
 

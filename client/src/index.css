@@ -158,10 +158,10 @@ button:disabled{
   @apply bg-gray-500 cursor-not-allowed
 }
 
- /* ::-webkit-scrollbar{
+ ::-webkit-scrollbar{
   width : 5px;
   background-color: rgb(207, 203, 203);
-}  */
+} 
 .jodit-container:not(.jodit_inline) .jodit-workplace {
  background-color: azure;
  color: black;

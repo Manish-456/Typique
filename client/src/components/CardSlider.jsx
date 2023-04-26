@@ -30,7 +30,7 @@ const CardSlider = ({ data }) => {
             {data?.title?.length < 20 ? data?.title : `${data?.title?.slice(0, 30)}...`}
           </h1>
         </Link>
-        <article className="text-[12px] md:text-[16px] text-gray-400 mt-4">{truncatedText}</article>
+        <article className="text-[12px] md:text-[14px] text-gray-400 mt-4">{truncatedText}</article>
 
         <div className="flex  gap-2 mt-4 mr-4">
           <svg

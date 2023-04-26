@@ -32,7 +32,7 @@ const ResetPassword = () => {
         toast.error("Password doesnot match!")
       }
     } catch (error) {
-      console.log(error);
+      
       
     }
   }

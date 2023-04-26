@@ -131,7 +131,7 @@ export const BlogApiSlice = apiSlice.injectEndpoints({
         },
       }),
       invalidatesTags: (result, error, arg) => {
-        console.log(arg)
+       
         return [{ type: "Blog", id: arg?.blogId }]
       },
     }),
