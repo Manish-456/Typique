@@ -17,10 +17,10 @@ const Explores = () => {
 
  const query = params.get('blog');
 
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const { data, isError } = useGetBlogsQuery(query ? {
     blog : query
-  } : {page : page, size : 3});
+  } : {page : page, size : 9});
 
 
  

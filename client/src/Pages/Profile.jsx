@@ -35,7 +35,7 @@ const Profile = () => {
   setUser({...userDetail})
   }, [userDetail])
 
-  const {data, isLoading} = blogHelperQuery({sort : true, page, size : 4});
+  const {data, isLoading} = blogHelperQuery({sort : true, page, size : 9});
  
   useEffect(() => {
    if(data){

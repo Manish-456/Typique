@@ -11,7 +11,7 @@ import useInfiniteScroll from "../hooks/useInfiniteScroll";
 const Category = () => {
   const { search } = useLocation();
   const [blogs, setBlogs] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [loadedBlogIds, setLoadedBlogIds] = useState(new Set())
   const params = new URLSearchParams(search);
   const cat = params.get("cat");
