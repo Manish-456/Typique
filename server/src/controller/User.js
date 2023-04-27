@@ -4,6 +4,11 @@ const fs = require("fs");
 const path = require("path");
 
 const UserController = {
+    /**
+   * @desc  Get all  users
+   * @route  GET /api/user
+   * @access  private
+   */
   async getAllUsers(req, res, next) {
     const users = await User.find().select("-password");
     if (!users.length) {
@@ -11,7 +16,11 @@ const UserController = {
     }
     res.status(200).json(users);
   },
-
+    /**
+   * @desc  Get an user
+   * @route  GET /api/user/:id
+   * @access  private
+   */
   async getUser(req, res, next) {
     const user = await User.findById({ _id: req.params.id }).select(
       "-password"
@@ -21,7 +30,11 @@ const UserController = {
 
     res.status(200).json(user);
   },
-
+  /**
+   * @desc  Update User
+   * @route  PATCH /api/user
+   * @access  private
+   */
   async updateUser(req, res, next) {
     const { id, avatar, username, webLink, country, bio, worksAt } = req.body;
     if (!id)

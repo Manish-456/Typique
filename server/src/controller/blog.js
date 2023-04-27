@@ -4,6 +4,12 @@ const Notification = require("../model/Notification");
 const fs = require("fs");
 const path = require("path");
 
+/** 
+* @desc  like_unlike  blog Post
+* @route PUT /api/blog/like_dislike
+* @access private => only authorized users can like_unlike the blog post.
+*/
+
 async function like_unlike_Post(req, res, next) {
   const { blogId, authorId, title, clientId } = req.body;
   const isLiked = await Blog.findById(blogId);
@@ -41,10 +47,12 @@ async function like_unlike_Post(req, res, next) {
 }
 const BlogController = {
   like_unlike_Post,
-
-  // @desc Create new Blog
-  // @route POST /api/blog
-  // @access Private
+  
+  /** 
+  * @desc Create new Blog
+  * @route POST /api/blog
+  * @access private
+  */
   async createBlog(req, res, next) {
     const { title, desc, category } = req.body;
     if (!title || !desc || !category) {
@@ -60,15 +68,15 @@ const BlogController = {
     return res.status(201).json({ message: "✅ New Blog Created" });
   },
 
-  // @desc Create new Blog
-  // @route POST /api/blog
-  // @access Private
+  /**
+   * @desc GET all Blogs
+   * @route GET /api/blog
+   * @access private
+   */
+
   async getAllBlogs(req, res, next) {
     const { size, cat, sort, trending, topStories, blog } = req.query;
 
-
-
-   
     const pipeLine = [
       {
         $sample: { size: parseInt(size) || 100 },
@@ -77,12 +85,18 @@ const BlogController = {
         $match: {
           ...(cat && { category: cat }),
           ...(topStories && {
-            $expr : {
-             $gt : [
-               { $cond: { if: { $isArray: "$view" }, then: { $size: "$view" }, else: 0 } },
-               0
-             ]
-            }
+            $expr: {
+              $gt: [
+                {
+                  $cond: {
+                    if: { $isArray: "$view" },
+                    then: { $size: "$view" },
+                    else: 0,
+                  },
+                },
+                0,
+              ],
+            },
           }),
           $or: [
             {
@@ -105,17 +119,7 @@ const BlogController = {
           }),
         },
       },
-      {
-        $group: {
-          _id: "$_id",
-          firstBlog: { $first: "$$ROOT" }
-        }
-      },
-      {
-        $replaceRoot: {
-          newRoot: "$firstBlog"
-        }
-      },
+
       ...(sort
         ? [
             {
@@ -124,13 +128,10 @@ const BlogController = {
               },
             },
           ]
-        : [])
-    ]
-    
-    
-  
-    const blogs = await Blog.aggregate(pipeLine);
+        : []),
+    ];
 
+    const blogs = await Blog.aggregate(pipeLine);
 
     if (!blogs.length) {
       return res.status(404).json({ message: "No blogs found" });
@@ -138,13 +139,12 @@ const BlogController = {
 
     return res.status(200).json(blogs);
   },
-  async getComments(req, res, next) {
-    const blog = await Blog.findById(req.params.id).populate("User");
-    if (!blog) {
-      return next(CustomErrorHandler.notFound("Blog "));
-    }
-    res.json(blog.comment);
-  },
+
+  /**
+   * @desc  Add Views
+   * @route  PATCH /api/blog/view/:blogId
+   * @access private
+   */
 
   async views(req, res, next) {
     const { blogId } = req.params;
@@ -158,7 +158,7 @@ const BlogController = {
       return res.status(204);
     }
 
-   await blog.updateOne({
+    await blog.updateOne({
       $push: {
         view: req.id,
       },
@@ -166,6 +166,11 @@ const BlogController = {
 
     return res.status(200).json("View increased");
   },
+  /**
+   * @desc  Update existing Blog
+   * @route  PUT /api/blog/update
+   * @access private
+   */
 
   async updateBlog(req, res, next) {
     const { blogId, title, desc, category, image } = req.body;
@@ -220,6 +225,13 @@ const BlogController = {
       );
     }
   },
+
+  /**
+   * @desc delete specific Blog
+   * @route DELETE /api/blog/:id
+   * @access private
+   */
+
   async deleteBlog(req, res, next) {
     const { id } = req.params;
     if (!id) return next(CustomErrorHandler.CustomError(400, "Bad Request"));
@@ -244,6 +256,11 @@ const BlogController = {
       return res.status(400).json({ message: "You can delete your own blog" });
     }
   },
+  /**
+   * @desc Create Comment
+   * @route POST /api/blog/comment/:blogId
+   * @access private
+   */
 
   async createComment(req, res, next) {
     const { text, blogId, authorId, title, clientId } = req.body;
@@ -267,9 +284,15 @@ const BlogController = {
       commentId: comment[0]._id,
     });
     let not = await newNotification.save();
-   
+
     return res.json("Commented successfully");
   },
+
+  /**
+   * @desc Edit Comment
+   * @route PATCH /api/blog/comment/edit
+   * @access private
+   */
 
   async editComment(req, res, next) {
     const blog = await Blog.findById(req.body.blogId);
@@ -284,12 +307,19 @@ const BlogController = {
     await blog.save();
     return res.json({ message: "Comment updated Successfully" });
   },
-  async deletecomment(req, res, next) {
+
+ /**
+  * @desc Delete comment
+  * @route DELETE /api/blog/comment/remove
+  * @access private
+ */
+
+ async deletecomment(req, res, next) {
     const blog = await Blog.findById(req.body.blogId);
     const commentIndex = blog.comment.findIndex(
       (c) => c._id.toString() === req.body.commentId
     );
-await Notification.findOneAndDelete({
+    await Notification.findOneAndDelete({
       commentId: req.body.commentId,
     });
 
