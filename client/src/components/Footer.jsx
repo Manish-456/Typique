@@ -40,9 +40,8 @@ const Footer = ({setEmail, id}) => {
       </div>
         <p  className='text-[12px] text-center mt-5 text-blue-500
 '>Copyright ©2023 All rights reserved</p>
-  <p className='text-[12px] text-center mt-2 text-cyan-300'>Made with by <span className='text-red-500'>❤</span> <Link target='_blank' to={`https://github.com/Manish-456`} className=''>Manish Tamang</Link> </p>
+  <p className='text-[12px] text-center mt-2 text-cyan-300'>Made with  <span className='text-red-500'>❤</span> <Link target='_blank' to={`https://github.com/Manish-456`}>by Manish Tamang</Link> </p>
     </footer>
   )
 }
-
 export default Footer

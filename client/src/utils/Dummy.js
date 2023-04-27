@@ -11,6 +11,12 @@ export const subTitle = [
     image : "/politics.png"
   },
 
+  {
+    name : "science",
+    text : "This category covers topics related to chemistry, biology, innovation and many more",
+    image : "/science1.png"
+  },
+
    {
     name : "health",
     text : "This category covers topics related to nutrition, exercise, wellness, and mental health.",

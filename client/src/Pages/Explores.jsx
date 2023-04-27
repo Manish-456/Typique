@@ -35,7 +35,7 @@ const Explores = () => {
      
         </div>
         <div className="md:w-1/2">
-          <img src="./blog-main.png" alt="" />
+          <img src="/explore.png" alt="" />
         </div>
       </div>
     </div>
