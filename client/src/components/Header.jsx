@@ -103,7 +103,7 @@ const Header = () => {
       navigate("/auth");
     } catch (error) {}
   };
-  let imgClass = "sm:w-[30%] w-[56%] md:w-[100%]";
+  let imgClass = " w-[50px] md:w-[100px]";
   if (!id) {
     imgClass = "w-[50px] md:w-[100px]";
   }
