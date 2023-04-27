@@ -11,16 +11,16 @@ const StoryList = ({ blogId, size = null }) => {
       {blog && (
         <div className="flex  items-start gap-4 shadow-md ">
      
-          <div className="w-20">
+          {/* <div className="w-20"> */}
           <img
               src={
                 blog?.image ? `${API_URL}/images/${blog?.image}` : ""
               }
               alt=""
-              className="w-[8rem] h-20 object-cover"
+              className="w-[4.5rem] h-[5rem] object-cover"
             />
     
-          </div>
+          {/* </div> */}
     
           <div>
             <div className="flex flex-col lg:flex gap-2">

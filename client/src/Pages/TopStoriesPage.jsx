@@ -48,7 +48,7 @@ const TopStoriesPage = () => {
               Top Stories
             </h1>
         
-          <div className="flex gap-10 flex-wrap ">
+          <div className="flex gap-2 flex-wrap ">
           {
             blogs?.map(blog => <BlogCard key={blog?.id} blogId={blog?.id} />)
           }

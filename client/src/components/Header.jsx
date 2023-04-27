@@ -85,7 +85,7 @@ const Header = () => {
   ToggleMenu(notificationRef, setOpenNotification);
 
   let catLinkClass =
-    "md:text-md hover:text-gray-400 text-[17px]  font-semibold text-gray-500";
+    "md:text-md hover:text-gray-400 text-[14px]  font-semibold text-gray-500";
   let searchBox, divBox, img;
 
   if (windowSize[0] <= 640 && !showInput) {
@@ -185,7 +185,7 @@ const Header = () => {
           {showLogo && (
             <div
               onClick={() => navigate("/home")}
-              className="  lg:w-[15%] xl:w-[12%] w-[35%] sm:w-[60%]"
+              className="  lg:w-[15%] xl:w-[12%] w-[35%] sm:w-[19%]"
             >
               <img src="/Logo.svg" alt="" className={imgClass} />
             </div>
@@ -288,7 +288,7 @@ const Header = () => {
                   <ul
                     className={`md:absolute static ${theme.secondary} ${
                       open ? "block" : "hidden"
-                    } md:shadow-md shadow-none px-10 py-2  left-[-80px] top-[47px] w-[400px]`}
+                    } md:shadow-md shadow-none px-10 py-2  left-[-80px] top-[47px]  w-[350px]`}
                   >
                     {catLink}
 

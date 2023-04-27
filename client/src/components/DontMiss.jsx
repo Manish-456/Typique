@@ -85,11 +85,11 @@ const DontMiss = () => {
         <hr className="h-full text-gray-900" />
         <div className="right-side flex flex-col gap-6">
           <div className="">
-            <h1 className="mb-2 text-[var(--primary)] font-bold md:text-[20px] text-[16px]">
+            <h1 className="mb-2 text-[var(--primary)] font-bold md:text-[20px] text-[18px]">
               About Typique
             </h1>
             <hr />
-            <p className="text-gray-400 md:text-[16px]  text-[14px] font-thin">
+            <p className="text-gray-400 md:text-[16px] mt-3 text-[14px] font-thin">
               Typique is a cutting-edge blogging app that allows users to create
               visually stunning posts using a wide range of unique typographic
               styles. With a user-friendly interface and powerful editing
@@ -100,7 +100,7 @@ const DontMiss = () => {
           <hr />
           <div className="flex flex-col gap-4">
             {/* Top Stories */}
-            <h1 className="text-[var(--primary)] font-bold md:text-[20px] text-[16px]">
+            <h1 className="text-[var(--primary)] font-bold md:text-[20px] text-[18px]">
               Top Stories
             </h1>
             <hr />

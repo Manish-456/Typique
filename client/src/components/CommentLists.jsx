@@ -24,9 +24,9 @@ const CommentLists = ({ comment,setCommentDetail, blogId ,setEdit }) => {
     <>
       {
         <div key={comment._id} className="   p-4 flex  ">
-        <Link to={`/profile/${user?._id}`}>
+        <Link className="h-10 w-10" to={`/profile/${user?._id}`}>
         <img
-            className="w-12 h-12 rounded-full object-cover"
+            className="h-full w-full rounded-full object-cover"
             src={
               user?.avatar
                 ? `${API_URL}/images/${user?.avatar}`
