@@ -56,9 +56,11 @@ const Profile = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-4 relative">
         {openDrawer && (
           <div
-            className="flex flex-col  
-       gap-4 translate-y-[20%] translate-x-[10%]   fixed  w-[70%] md:w-[50%] mx-[5%]  z-10 bg-white"
-          >
+   
+            className="  
+       w-full md:w-1/2 mx-auto  sticky top-20 bottom-0  z-10 bg-white"
+        
+        >
             <EditProfile userInfo={user} setOpenDrawer={setOpenDrawer} />
           </div>
         )}
@@ -92,15 +94,15 @@ const Profile = () => {
                   alt=""
                 />
               </div>
-              <div className="text-center flex flex-col gap-2">
+              <div className="text-center  flex flex-col gap-2">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-500">
                   {user?.username}
                 </h1>
-                <p className="text-sm font-semibold text-gray-400">
-                  {user?.bio}
-                </p>
+                <article dangerouslySetInnerHTML={{__html : user?.bio}} className="text-sm font-semibold text-gray-400">
+                  
+                </article>
                 {user?.webLink && (
-                  <div className="flex gap-2">
+                  <div className="flex justify-center gap-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -118,7 +120,7 @@ const Profile = () => {
 
                     <Link
                       target={"_blank"}
-                      className="underline text-blue-500 text-sm"
+                      className="underline text-center text-blue-500 text-sm"
                       to="https://nextoyoutube.netlify.app"
                     >
                       {user?.webLink}

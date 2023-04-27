@@ -1,20 +1,26 @@
 import JoditEditor from 'jodit-react'
-import React, { useContext, useMemo } from 'react'
-import { ThemeContext } from '../context/ThemeContext';
+import React, {useContext, useMemo } from 'react'
+import { ThemeContext } from '../context/ThemeContext'
+
 
 const Editor = ({placeholder, value, setValue}) => {
        
-       const {theme} = useContext(ThemeContext)
+       const {themes} = useContext(ThemeContext)
+       console.log(themes)
     const config =
         useMemo(() => ({
           readonly : false,
-          placeholder : placeholder || "Start typing"
-        
+          placeholder : placeholder || "Start typing",
+          height : "0px",
+          style: {
+            backgroundColor : `${themes === "light" ? "white" : "white"}`,
+            color : `${themes === "light" ? "white" : "black"}`
+        },
           }), [value])
     
  return (
   <JoditEditor
-  className="bg-white dark:bg-black text-black dark:text-white border-gray-400 dark:border-gray-800 rounded-md p-4 shadow-md"
+  
   value={value}
   config={config}
   tabIndex={1}

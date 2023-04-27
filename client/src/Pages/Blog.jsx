@@ -68,7 +68,7 @@ const Blog = () => {
                   alt=""
                 />
                 <h1>{user?.username}</h1>
-                <p className="mb-4 text-[13px] md:text-[14px]">{user?.bio}</p>
+                <article dangerouslySetInnerHTML={{__html : user?.bio}} className="mb-4 text-[13px] md:text-[14px]"></article>
                 <p className="text-gray-400 font-bold">{user?.country}</p>
               </div>
             </div>

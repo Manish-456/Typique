@@ -5,6 +5,7 @@ import {
 } from "../Features/users/userApiSlice";
 import { ThemeContext } from "../context/ThemeContext";
 import { API_URL } from "../config";
+import Editor from "./Editor";
 
 
 const EditProfile = ({ setOpenDrawer, userInfo }) => {
@@ -80,7 +81,7 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
       <form
         action=""
         onSubmit={handleUpdate}
-        className={`${theme.primary} flex p-4 gap-4 flex-col`}
+        className={`${theme.primary} flex p-4 gap-3 flex-col`}
       >
         <div className="flex justify-between">
           <h1 className="text-center text-xl font-bold text-gray-400">
@@ -134,13 +135,15 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
           />
         </div>
 
-        <textarea
+        {/* <textarea
           className={className}
           onChange={(e) => setBio(e.target.value)}
           name="bio"
           value={bio}
           placeholder="Bio"
-        />
+        /> */}
+
+        <Editor value={bio} placeholder={"Bio"} setValue={setBio}/>
 
         <div className="flex gap-2">
           <input
