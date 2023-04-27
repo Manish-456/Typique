@@ -37,7 +37,7 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
     
     data.append("file", file, fileName);
     try {
-      fetch("${API_URL}/upload", {
+      fetch(`${API_URL}/upload`, {
         method: "POST",
         mode: "cors",
         credentials: "include",
