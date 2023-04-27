@@ -64,19 +64,15 @@ const BlogController = {
   // @route POST /api/blog
   // @access Private
   async getAllBlogs(req, res, next) {
-    const { size, cat, sort, trending, topStories, blog, page } = req.query;
-    // const skip = (page - 1) * 10;
-    let skip = 0;
+    const { size, cat, sort, trending, topStories, blog } = req.query;
 
-    if(page && parseInt(size) >= 0){
-      skip = (page - 1) * parseInt(size)
-    }
-  
+
+
+   
     const pipeLine = [
       {
         $sample: { size: parseInt(size) || 100 },
       },
-     
       {
         $match: {
           ...(cat && { category: cat }),
@@ -87,10 +83,7 @@ const BlogController = {
                0
              ]
             }
-       }),
-
-
-
+          }),
           $or: [
             {
               ...(blog && {
@@ -107,11 +100,21 @@ const BlogController = {
               }),
             },
           ],
-
           ...(trending && {
             $expr: { $gt: [{ $size: "$likes" }, 0] },
           }),
         },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          firstBlog: { $first: "$$ROOT" }
+        }
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$firstBlog"
+        }
       },
       ...(sort
         ? [
@@ -123,16 +126,11 @@ const BlogController = {
           ]
         : [])
     ]
-
+    
+    
+  
     const blogs = await Blog.aggregate(pipeLine);
 
-    if(page && parseInt(size) >= 0){
-      pipeLine.push({
-        $skip : skip
-      }, {
-        $limit : size
-      })
-    }
 
     if (!blogs.length) {
       return res.status(404).json({ message: "No blogs found" });
@@ -140,7 +138,6 @@ const BlogController = {
 
     return res.status(200).json(blogs);
   },
-
   async getComments(req, res, next) {
     const blog = await Blog.findById(req.params.id).populate("User");
     if (!blog) {

@@ -6,40 +6,34 @@ import BlogCard from "../components/BlogCard";
 import { useEffect, useState } from "react";
 
 import { blogHelperQuery } from "../Helper/BlogHelper";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+
 
 const Category = () => {
   const { search } = useLocation();
   const [blogs, setBlogs] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loadedBlogIds, setLoadedBlogIds] = useState(new Set())
   const params = new URLSearchParams(search);
   const cat = params.get("cat");
 
-  const commonClass = "mt-10 p-4 flex flex-";
+
 
   const { data,  isLoading } = blogHelperQuery({
-    size: 9,
-    cat: cat,
-    page,
+
+    cat: cat
+ 
   });
 
   useEffect(() => {
     if (data) {
-      const newBlogIds = new Set(data.ids);
- 
-      const filteredIds = [...newBlogIds].filter(id => !loadedBlogIds.has(id));
-  
-      const newBlogs = filteredIds.map(id => data.entities[id]);
-      setBlogs(prevBlogs => [...prevBlogs, ...newBlogs]);
-  
-      
-      setLoadedBlogIds(prevIds => new Set([...prevIds, ...filteredIds]));
+      const newBlogIds = [...data?.ids];
+
+      const newBlogs = newBlogIds?.map((id) => data?.entities[id]);
+      setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
     }
+    return () => setBlogs([])
   }, [data]);
 
   
-  useInfiniteScroll(setBlogs, setPage)
+
   
   let result = subTitle?.filter(item => item?.name === cat?.toLowerCase());
   
@@ -82,10 +76,11 @@ const Category = () => {
           <h1 className="text-2xl font-semibold text-center mb-4  text-gray-400 ">{cat?.toUpperCase()}</h1>
           <div className="flex flex-wrap md:gap-2 gap-4 justify-center">
             {
-               blogs?.map((blog) => (
+               isLoading ? <p>Loading...</p> : blogs?.map((blog) => (
                     <BlogCard
                       blog={blog}
-                      blogId={blog.id}
+                      blogId={blog?.id}
+                      key={blog?.id}
                
                     />
                   ))}

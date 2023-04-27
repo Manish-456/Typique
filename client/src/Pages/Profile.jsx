@@ -7,9 +7,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import BlogDialogue from "../components/BlogDialogue";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import { blogHelperQuery } from "../Helper/BlogHelper";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { API_URL } from "../config";
 
+import { API_URL } from "../config";
 
 const Profile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -18,49 +17,39 @@ const Profile = () => {
   const { theme } = useContext(ThemeContext);
 
   const [openDialogue, setOpenDialogue] = useState(false);
-  
+
   const [title, setTitle] = useState("");
   const [blogId, setBlogId] = useState(null);
   const [blogs, setBlogs] = useState([]);
-  const [loadedBlogIds, setLoadedBlogIds] = useState(new Set());
 
-  const [user, setUser] = useState(null)
-  const [page, setPage] = useState(1);
+  const [user, setUser] = useState(null);
 
-
-
-  let {user : userDetail} = userWithUserIdQuery(userId)
+  let { user: userDetail } = userWithUserIdQuery(userId);
 
   useEffect(() => {
-  setUser({...userDetail})
-  }, [userDetail])
+    setUser({ ...userDetail });
+  }, [userDetail]);
 
-  const {data, isLoading} = blogHelperQuery({sort : true, page, size : 9});
+  const { data, isLoading } = blogHelperQuery({ sort: true });
+
+  useEffect(() => {
+    if (data) {
+      const newBlogIds = [...data.ids];
  
-  useEffect(() => {
-   if(data){
-    const newBlogIds = new Set(data.ids);
-     
-      const filteredIds = [...newBlogIds].filter(id => !loadedBlogIds.has(id));
 
-      const newBlogs = filteredIds.map(id => data?.entities[id]);
-      setBlogs(prevBlogs => [...prevBlogs, ...newBlogs]);
-  
-      setLoadedBlogIds(prevIds => new Set([...prevIds, ...filteredIds]));
+      const newBlogs = newBlogIds.map((id) => data?.entities[id]);
+      setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
     }
-  }, [data])
-
- 
-  
-  useInfiniteScroll(setBlogs, setPage)
+    return () =>  setBlogs([])
 
 
-    
+  }, [data]);
+
+
 
   const ownBlog = blogs?.filter((blog) => {
     return blog?.userId === userId;
   });
-  
 
   return (
     <div className={openDrawer ? `${theme.primary}` : "white"}>
@@ -168,7 +157,9 @@ const Profile = () => {
                         d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
                       />
                     </svg>
-                    <p className="text-gray-500 text-sm md:text-[15px]">Live : {user?.country}</p>
+                    <p className="text-gray-500 text-sm md:text-[15px]">
+                      Live : {user?.country}
+                    </p>
                   </div>
                 )}
                 {user?.email && (
@@ -236,6 +227,7 @@ const Profile = () => {
                     location={"/profile"}
                     isTrending={false}
                     setTitle={setTitle}
+                    key={blog?.id}
                     setBlogId={setBlogId}
                     isLatest={false}
                     setOpenDialogue={setOpenDialogue}

@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import { blogHelperWithoutPolling } from "../Helper/BlogHelper";
-import useInfiniteScroll from "../hooks/useInfiniteScroll";
+
 
 const TopStoriesPage = () => {
   const [blogs, setBlogs] = useState([]);
-  const [loadedBlogsId, setLoadedBlogsId] = useState(new Set());
-  const [page, setPage] = useState(0);
-  const {data} = blogHelperWithoutPolling({topStories : true, page : page, size : 3});
+ 
+  const {data} = blogHelperWithoutPolling({topStories : true});
   
- useEffect(() => {
-  if(data){
-    const newBlogId = new Set(data?.ids);
-    const filteredIds = [...newBlogId].filter(id => !loadedBlogsId.has(id));
-    const newBlogs = filteredIds?.map(id => data.entities[id]);
-    setBlogs(prev => [...prev, ...newBlogs]);
+  useEffect(() => {
+    if (data) {
+      const newBlogIds = [...data.ids];
+ 
 
-    setLoadedBlogsId(prevIds => new Set([...prevIds, ...filteredIds]));
-  }  
- }, [data])
+      const newBlogs = newBlogIds.map((id) => data?.entities[id]);
+      setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
+    }
+    return () =>  setBlogs([])
 
- useInfiniteScroll(setBlogs, setPage)
+
+  }, [data]);
+
 
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-4">
@@ -59,6 +59,6 @@ const TopStoriesPage = () => {
   );
 };
 
-// {data?.ids?.map((blogId) => <StoryList key={blogId} blogId = {blogId}/>)}
+
 
 export default TopStoriesPage;
