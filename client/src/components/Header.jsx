@@ -13,7 +13,7 @@ import { userWithUserIdQuery } from "../Helper/UserHelper";
 import { blogHelperQuery } from "../Helper/BlogHelper";
 import SearchHelper from "./SearchHelper";
 import { NavContent } from "../utils/Dummy";
-import { API_URL } from "../config";
+
 
 const Header = () => {
   const { socket } = useContext(SocketContext);
@@ -101,6 +101,7 @@ const Header = () => {
     try {
       await logout();
       navigate("/auth");
+      localStorage.removeItem("theme")
     } catch (error) {}
   };
   let imgClass = " w-[50px] md:w-[100px]";
@@ -184,7 +185,7 @@ const Header = () => {
           {/* Logo */}
           {showLogo && (
             <div
-              onClick={() => navigate("/home")}
+              onClick={() =>{id ?  navigate("/home") : navigate("/")}}
               className="  lg:w-[15%] xl:w-[12%] w-[35%] sm:w-[19%]"
             >
               <img src="/Logo.svg" alt="" className={imgClass} />
@@ -392,7 +393,7 @@ const Header = () => {
                     }}
                     src={
                       user?.avatar
-                        ? `${API_URL}/images/${user?.avatar}`
+                        ? `${user?.avatar}`
                         : "/noavatar.jpg"
                     }
                     title={user?.username}

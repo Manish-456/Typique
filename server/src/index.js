@@ -11,30 +11,23 @@ const errorHandler = require("./middleware/errorHandler");
 const authRoute = require("./routes/auth");
 const blogRoute = require("./routes/blog");
 const userRoute = require("./routes/user");
-
 const notificationRoute = require("./routes/notifications");
-const path = require("path");
-
-const multer = require("multer");
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 const userSockets = {};
 
-
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: `https://typique.onrender.com`,
+    origin: `https://typique.onrender.com`
   },
 });
-
 
 io.on("connection", (socket) => {
   socket.on("register", (user) => {
     userSockets[user.id] = socket.id;
-   
   });
 
   socket.on("send-notification", (data) => {
@@ -51,38 +44,21 @@ io.on("connection", (socket) => {
   });
 });
 
-
 connectDB(MONGO_URI);
 
-app.use(express.json());
-app.use(express.urlencoded({extended : true}))
+app.use(
+  express.json({
+    limit: "50mb",
+  })
+);
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.disable("x-powered-by");
 
-app.use("/images/", express.static(path.join(__dirname, "..", "./uploads")));
-
 app.get("/", (_, res) => {
   res.send("Welcome to Typique Server 🔥");
 });
-
-// Multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-app.post("/upload", upload.single("file"), (_, res) => {
-  res.json({ message: "File uploaded successfully" });
-});
-
-// Multer ended
 
 app.use("/api/auth", authRoute);
 app.use("/api/blog", blogRoute);

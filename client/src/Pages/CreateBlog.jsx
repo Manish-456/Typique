@@ -1,17 +1,17 @@
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import Editor from "../components/Editor";
 import {
-  selectBlogById,
   useAddNewBlogsMutation,
   useUpdateBlogMutation,
 } from "../Features/blog/blogApiSlice";
+import { v4 as uuidv4 } from "uuid";
 import { ThemeContext } from "../context/ThemeContext";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
 import { blogwithUserIdQuery } from "../Helper/BlogHelper";
-import { API_URL } from "../config";
+
 import { NavContent } from "../utils/Dummy";
 
 const CreateBlog = () => {
@@ -59,26 +59,20 @@ const CreateBlog = () => {
   }
 
   const handleUpload = async () => {
-    const data = new FormData();
-    const fileName = Date.now() + file.name;
-
-    data.append("file", file, fileName);
+    const fileReader = new FileReader();
     try {
-      fetch(`${API_URL}/upload`, {
-        method: "POST",
-        mode: "cors",
-        credentials: "include",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((res) => toast.success(res.message));
-
-      setFile(fileName);
+      if (file) {
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+          setFile(fileReader.result);
+          toast.success("Image url created");
+        };
+      }
     } catch (error) {
 
     }
   };
-
+ 
   const handleCreate = async () => {
     const blogDetails = {
       title,
@@ -87,15 +81,22 @@ const CreateBlog = () => {
       desc,
     };
     if (id) {
-      const { data } = await updateBlog({ ...blogDetails, blogId: id });
+      const { data } = await updateBlog({ ...blogDetails, image_key:blog?.image_key ,blogId: id });
+
       toast.success(data?.message);
       navigate(`/profile/${userId}`);
     } else {
       try {
-        const { data } = await addNewBlogs(blogDetails);
+        const { data } = await addNewBlogs({
+          ...blogDetails,
+          image_key: uuidv4(),
+        });
+
         toast.success(data?.message);
         navigate(`/profile/${userId}`);
-      } catch (error) {}
+      } catch (error) {
+        toast.error("Something went wrong")
+      }
     }
   };
 
@@ -103,7 +104,7 @@ const CreateBlog = () => {
     <>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="flex flex-col  gap-8 mt-10 md:max-w-[50%] max-w-7xl mx-auto px-6 md:px-4">
-        <h1 className="text-3xl text-gray-400 text-center">
+        <h1 className="text-2xl text-gray-400 text-center">
           {id ? "Update" : "Create"} A Blog
         </h1>
         <input
@@ -144,11 +145,7 @@ const CreateBlog = () => {
           </label>
           <div className="border-gray h-32 w-32 border border-gray-500">
             <img
-              src={
-                !tempFile
-                  ? `${API_URL}/images/${blog?.image}`
-                  : tempFile
-              }
+              src={!tempFile ? `${blog?.image}` : tempFile}
               alt=""
               className="w-full h-full"
             />
@@ -170,9 +167,15 @@ const CreateBlog = () => {
               onChange={(e) => setCategory(e.target.value)}
               className="outline-none p-4 bg-transparent"
             >
-              {
-              NavContent.slice(1).map((option) => <option className={optionClass} value={option?.category} key={option?.id} >{option?.link}</option>)
-              }
+              {NavContent.slice(1).map((option) => (
+                <option
+                  className={optionClass}
+                  value={option?.category}
+                  key={option?.id}
+                >
+                  {option?.link}
+                </option>
+              ))}
             </select>
           </label>
         </div>

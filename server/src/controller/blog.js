@@ -1,14 +1,13 @@
 const CustomErrorHandler = require("../helper/customErrorHandler");
+const { uploadImage, deleteImage } = require("../helper/uploadImage");
 const Blog = require("../model/Blog");
 const Notification = require("../model/Notification");
-const fs = require("fs");
-const path = require("path");
 
-/** 
-* @desc  like_unlike  blog Post
-* @route PUT /api/blog/like_dislike
-* @access private => only authorized users can like_unlike the blog post.
-*/
+/**
+ * @desc  like_unlike  blog Post
+ * @route PUT /api/blog/like_dislike
+ * @access private => only authorized users can like_unlike the blog post.
+ */
 
 async function like_unlike_Post(req, res, next) {
   const { blogId, authorId, title, clientId } = req.body;
@@ -47,25 +46,35 @@ async function like_unlike_Post(req, res, next) {
 }
 const BlogController = {
   like_unlike_Post,
-  
-  /** 
-  * @desc Create new Blog
-  * @route POST /api/blog
-  * @access private
-  */
+
+  /**
+   * @desc Create new Blog
+   * @route POST /api/blog
+   * @access private
+   */
   async createBlog(req, res, next) {
-    const { title, desc, category } = req.body;
-    if (!title || !desc || !category) {
+    const { title, desc, category, image, image_key } = req.body;
+
+    if (!title || !desc || !category || !image) {
       return next(
         CustomErrorHandler.AllFieldsRequired("All fields are required")
       );
     }
-    const newBlog = new Blog({
-      userId: req.id,
-      ...req.body,
-    });
-    await newBlog.save();
-    return res.status(201).json({ message: "✅ New Blog Created" });
+
+    try {
+      let photoUrl = await uploadImage(image, image_key);
+
+      const newBlog = new Blog({
+        userId: req.id,
+        ...req.body,
+        photoUrl,
+      });
+
+      await newBlog.save();
+      return res.status(201).json({ message: "✅ New Blog Created" });
+    } catch (err) {
+      return next(CustomErrorHandler.CustomError(500, "Something went wrong"));
+    }
   },
 
   /**
@@ -173,18 +182,13 @@ const BlogController = {
    */
 
   async updateBlog(req, res, next) {
-    const { blogId, title, desc, category, image } = req.body;
+    const { blogId, title, desc, category, image, image_key } = req.body;
     const blog = await Blog.findById(blogId);
-    const filePath = path.join(__dirname, "..", "..", "./uploads");
 
     if (blog?.userId.toString() === req.id) {
       if (image) {
-        if (image !== blog.image) {
-          fs.unlink(`${filePath}/${blog.image}`, async (err, _) => {
-            if (err) console.log(err);
-            console.log("record cleared");
-          });
-
+        if (image_key === blog?.image_key) {
+          const photoUrl = await uploadImage(image, image_key);
           await Blog.findByIdAndUpdate(
             blogId,
             {
@@ -192,12 +196,16 @@ const BlogController = {
                 title,
                 desc,
                 category,
-                image,
+                image: photoUrl,
               },
             },
             {
               new: true,
             }
+          );
+        } else {
+          return next(
+            CustomErrorHandler.CustomError(400, "Can't update image")
           );
         }
       } else {
@@ -236,7 +244,7 @@ const BlogController = {
     const { id } = req.params;
     if (!id) return next(CustomErrorHandler.CustomError(400, "Bad Request"));
     const blog = await Blog.findById(id);
-    const filePath = path.join(__dirname, "..", "..", "./uploads");
+
     if (blog.userId.toString() === req.id) {
       const notification = await Notification.find({ title: blog?.title });
       Promise.all(
@@ -245,10 +253,7 @@ const BlogController = {
         })
       );
 
-      fs.unlink(`${filePath}/${blog.image}`, (err, result) => {
-        if (err) console.log(err);
-        console.log("record cleared");
-      });
+      await deleteImage(blog?.image_key);
 
       await Blog.findByIdAndDelete(id);
       return res.status(200).json({ message: "Blog deleted 💯" });
@@ -308,13 +313,13 @@ const BlogController = {
     return res.json({ message: "Comment updated Successfully" });
   },
 
- /**
-  * @desc Delete comment
-  * @route DELETE /api/blog/comment/remove
-  * @access private
- */
+  /**
+   * @desc Delete comment
+   * @route DELETE /api/blog/comment/remove
+   * @access private
+   */
 
- async deletecomment(req, res, next) {
+  async deletecomment(req, res, next) {
     const blog = await Blog.findById(req.body.blogId);
     const commentIndex = blog.comment.findIndex(
       (c) => c._id.toString() === req.body.commentId

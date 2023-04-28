@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import {
-  useUpdateUserMutation,
-} from "../Features/users/userApiSlice";
+import { useUpdateUserMutation } from "../Features/users/userApiSlice";
 import { ThemeContext } from "../context/ThemeContext";
-import { API_URL } from "../config";
 import Editor from "./Editor";
 
-
 const EditProfile = ({ setOpenDrawer, userInfo }) => {
-  const { id, username: name } = useAuth();
+  const { id } = useAuth();
   const [file, setFile] = useState(userInfo?.avatar || "");
   const [tempFile, setTempFile] = useState("");
   const [username, setUsername] = useState(userInfo?.username || "");
@@ -17,11 +13,10 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
   const [country, setCountry] = useState(userInfo?.country || "");
   const [bio, setBio] = useState(userInfo?.bio || "");
   const [worksAt, setWorksAt] = useState(userInfo?.worksAt || "");
-  const className = "border bg-transparent border-blue-400 rounded-lg p-2 w-full";
-  const {theme} = useContext(ThemeContext);
-  const [updateUser, { isLoading, isSuccess}] =
-    useUpdateUserMutation();
-
+  const className =
+    "border bg-transparent border-blue-400 rounded-lg p-2 w-full";
+  const { theme } = useContext(ThemeContext);
+  const [updateUser, { isLoading, isSuccess }] = useUpdateUserMutation();
 
   const handleImg = (e) => {
     const img = e.target.files && e.target.files[0];
@@ -30,32 +25,23 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
     const blob = new Blob([img], { type: img.type });
     setTempFile(URL.createObjectURL(blob));
   };
-  
-  const handleUpload = async () => {
-    const data = new FormData();
-    const fileName = Date.now() + file.name;
-    
-    data.append("file", file, fileName);
-    try {
-      fetch(`${API_URL}/upload`, {
-        method: "POST",
-        mode: "cors",
-        credentials: "include",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((res) => toast.success(res.message));
 
-      setFile(fileName);
-    } catch (error) {
-      
-    }
+  const handleUpload = async () => {
+    const fileReader = new FileReader();
+
+    try {
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        setFile(fileReader.result);
+      };
+    } catch (error) {}
   };
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    await updateUser({
+    const {data} =   await updateUser({
       ...(file && { avatar: file }),
       id,
       username,
@@ -65,10 +51,8 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
       worksAt,
     });
 
-    
-  };
 
-  
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -135,15 +119,8 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
           />
         </div>
 
-        {/* <textarea
-          className={className}
-          onChange={(e) => setBio(e.target.value)}
-          name="bio"
-          value={bio}
-          placeholder="Bio"
-        /> */}
-
-        <Editor value={bio} placeholder={"Bio"} setValue={setBio}/>
+      
+        <Editor value={bio} placeholder={"Bio"} setValue={setBio} />
 
         <div className="flex gap-2">
           <input
@@ -182,11 +159,7 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
           </label>
           <div className="border-gray h-16 w-16 border border-gray-500">
             <img
-              src={
-                tempFile ||
-                `${API_URL}/images/${userInfo?.avatar}` ||
-                ""
-              }
+              src={tempFile || `${userInfo?.avatar}` || ""}
               alt=""
               className="w-full h-full"
             />

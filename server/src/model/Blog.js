@@ -9,6 +9,9 @@ const blogSchema = new mongoose.Schema(
     title: { type: String, required: true },
     desc: { type: String, required: true },
     likes: [{ type: String }],
+    image_key : {
+   type : String, unique : true
+    },
     comment: [
       {
         userId: {

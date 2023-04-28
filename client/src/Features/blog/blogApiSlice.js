@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
+import { createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
 const blogsAdapter = createEntityAdapter({});
@@ -188,18 +188,5 @@ export const {
   useViewsMutation
 } = BlogApiSlice;
 
-// returns the query result object
-export const selectBlogResult = BlogApiSlice.endpoints.getBlogs.select();
 
-// creates memoized selector
-export const selectBlogData = createSelector(
-  selectBlogResult,
-  (blogResult) => blogResult.data
-);
-//getSelectors creates these selectors and we rename them with aliases using destructuring
-export const {
-  selectAll: selectAllBlogs,
-  selectById: selectBlogById,
-  selectIds: selectBlogIds,
-  // Pass in a selector that returns the blogs slice of state
-} = blogsAdapter.getSelectors((state) => selectBlogData(state) ?? initialState);
+

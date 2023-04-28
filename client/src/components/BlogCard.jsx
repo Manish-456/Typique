@@ -4,7 +4,6 @@ import DateFormat from "../utils/DateFormat";
 import useAuth from "../hooks/useAuth";
 import { blogWithFixedSizeAndBlogIdQuery } from "../Helper/BlogHelper";
 import { useViewsMutation } from "../Features/blog/blogApiSlice";
-import { API_URL } from "../config";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import useDOMParser from "../hooks/useDOMParser";
 const BlogCard = ({
@@ -42,7 +41,7 @@ const BlogCard = ({
     <div className={cardClass}>
       <Link to={`/blog/${blog?.id}`} className="overflow-hidden rounded-xl w-full">
         <img
-          src={`${API_URL}/images/${blog?.image}`}
+          src={`${blog?.image}`}
           className="w-full h-64 object-cover rounded-xl  img-animation"
           alt=""
         />
@@ -125,7 +124,7 @@ const BlogCard = ({
               <img
                 src={
                   user?.avatar
-                    ? `${API_URL}/images/${user?.avatar}`
+                    ? `${user?.avatar}`
                     : "/noavatar.jpg"
                 }
                 className=" md:w-[3rem] w-[2rem] h-[2rem] md:h-[3rem]  rounded-full object-cover"

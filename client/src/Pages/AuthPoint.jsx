@@ -13,8 +13,6 @@ import { SocketContext } from "../context/socketContext";
 import useAuth from "../hooks/useAuth";
 
 const AuthPoint = () => {
-
-
   const navigate = useNavigate();
   const [registered, setRegistered] = useState(false);
   const [register] = useRegisterMutation();
@@ -45,7 +43,7 @@ const AuthPoint = () => {
           setPersist(false);
         } else if (data) {
           dispatch(setCredentials({ accessToken: data?.accessToken }));
-          
+
           navigate("/home");
         }
       } catch (err) {}
@@ -78,8 +76,6 @@ const AuthPoint = () => {
   setTimeout(() => {
     setErr(null);
   }, 5000);
-
-
 
   const inputClass = `border-b bg-transparent border-gray-600 p-2 outline-none`;
 
@@ -140,8 +136,7 @@ const AuthPoint = () => {
                 Forgot Password ?{" "}
                 <Link
                   to="/recovery"
-
-                  onClick={() => dispatch(setEmailCredential({email}))}
+                  onClick={() => dispatch(setEmailCredential({ email }))}
                   className="text-blue-500 cursor-pointer"
                 >
                   Recover now !

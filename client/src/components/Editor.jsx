@@ -6,7 +6,7 @@ import { ThemeContext } from '../context/ThemeContext'
 const Editor = ({placeholder, value, setValue}) => {
        
        const {themes} = useContext(ThemeContext)
-       console.log(themes)
+    
     const config =
         useMemo(() => ({
           readonly : false,
@@ -14,7 +14,7 @@ const Editor = ({placeholder, value, setValue}) => {
   
           style: {
             backgroundColor : `${themes === "light" ? "white" : "white"}`,
-            color : `${themes === "light" ? "white" : "black"}`
+            color : `${themes === "light" ? "black" : "white"}`
         },
           }), [value])
     

@@ -1,7 +1,6 @@
 const User = require("../model/User");
 const CustomErrorHandler = require("../helper/customErrorHandler");
-const fs = require("fs");
-const path = require("path");
+const { uploadImage } = require("../helper/uploadImage");
 
 const UserController = {
     /**
@@ -36,31 +35,23 @@ const UserController = {
    * @access  private
    */
   async updateUser(req, res, next) {
-    const { id, avatar, username, webLink, country, bio, worksAt } = req.body;
+    const { id, avatar } = req.body;
     if (!id)
       return next(
         CustomErrorHandler.CustomError(400, "You can't update your profile")
       );
 
-    const filePath = path.join(__dirname, "..", "..", "./uploads");
-    const user = await User.findById(id);
+   
+   
     
-      if (user?.avatar !== avatar) {
-      
-        fs.unlink(`${filePath}/${user.avatar}`, (err, result) => {
-          if (err) console.log(err);
-          console.log(`record cleared`);
-        });
+      if (avatar) {
+       const photoUrl = await uploadImage(avatar, id)
         await User.findByIdAndUpdate(
           { _id: id },
           {
             $set: {
-              username,
-              webLink,
-              country,
-              bio,
-              worksAt,
-              avatar,
+               ...req.body,
+              avatar : photoUrl,
             },
           },
           {
@@ -75,11 +66,7 @@ const UserController = {
         { _id: id },
         {
           $set: {
-            username,
-            webLink,
-            country,
-            bio,
-            worksAt,
+          ...req.body
           },
         },
         {

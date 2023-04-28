@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import DateFormat from "../utils/DateFormat";
-import { API_URL } from "../config";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import useDOMParser from "../hooks/useDOMParser";
 const CardSlider = ({ data }) => {
@@ -12,7 +11,7 @@ const CardSlider = ({ data }) => {
     <div className={cardClass}>
       <Link to={`/blog/${data?.id}`} className="overflow-hidden rounded-xl">
         <img
-          src={`${API_URL}/images/${data?.image}`}
+          src={`${data?.image}`|| "/noblogimg.png"}
           className="w-full h-36 object-cover rounded-xl  img-animation"
           alt=""
         />
@@ -90,7 +89,7 @@ const CardSlider = ({ data }) => {
           <img
             src={
               user?.avatar
-                ? `${API_URL}/images/${user?.avatar}`
+                ? `${user?.avatar}`
                 : "/noavatar.jpg"
             }
             className=" w-[2rem] h-[2rem]  rounded-full object-cover "

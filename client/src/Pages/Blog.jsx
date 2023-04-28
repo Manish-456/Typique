@@ -40,7 +40,7 @@ const Blog = () => {
     }
     toast.success(data?.message);
   };
-
+ 
   return (
     <>
       
@@ -52,7 +52,7 @@ const Blog = () => {
             <div className="left-container md:w-1/2 w-full ">
               <img
                 className=" w-full object-cover md:w-[80%] "
-                src={`${API_URL}/images/${blog?.image}`}
+                src={`${blog?.image}` || "/noblogimg.png"}
                 alt=""
               />
             </div>
@@ -61,7 +61,7 @@ const Blog = () => {
                 <img
                   src={
                    user?.avatar
-                      ? `${API_URL}/images/${user?.avatar}`
+                      ? `${user?.avatar}`
                       : "/noavatar.jpg"
                   }
                   className="w-24 h-24 object-cover rounded-full"
@@ -82,7 +82,7 @@ const Blog = () => {
               <img
                 src={
                   user?.avatar
-                    ? `${API_URL}/images/${user?.avatar}`
+                    ? `${user?.avatar}`
                     : "/noavatar.jpg"
                 }
                 className="w-16 h-16 object-cover rounded-full"

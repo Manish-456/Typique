@@ -38,7 +38,7 @@ const Layout = () => {
        toast.success(data?.msg)
 
       } catch (error) {
-        console.log(error);
+    
       }
     };
 

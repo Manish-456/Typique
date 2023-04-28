@@ -83,14 +83,15 @@ const Profile = () => {
         >
           <div className="flex md:flex-row flex-col gap-4">
             <div className="left-container  rounded-xl flex gap-4 flex-col items-center justify-center">
-              <div>
+              <div >
                 <img
+                
                   src={
                     user?.avatar
-                      ? `${API_URL}/images/${user?.avatar}`
+                      ? `${user?.avatar}`
                       : "/noavatar.jpg"
                   }
-                  className="w-32 h-32 object-cover  rounded-full"
+                  className="w-32 h-32 shadow-xl object-cover  rounded-full"
                   alt=""
                 />
               </div>
@@ -151,7 +152,7 @@ const Profile = () => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-6 h-6 text-blue-400"
                     >
                       <path
                         strokeLinecap="round"
@@ -159,7 +160,7 @@ const Profile = () => {
                         d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
                       />
                     </svg>
-                    <p className="text-gray-500 text-sm md:text-[15px]">
+                    <p className=" text-sm md:text-[15px]">
                       Live : {user?.country}
                     </p>
                   </div>
@@ -172,7 +173,7 @@ const Profile = () => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-6 h-6 text-blue-400"
                     >
                       <path
                         strokeLinecap="round"
@@ -182,7 +183,7 @@ const Profile = () => {
                     </svg>
 
                     <p
-                      className="text-gray-500 text-sm md:text-[15px]
+                      className="text-sm md:text-[15px]
                      "
                     >
                       Email : {user?.email}
@@ -197,7 +198,7 @@ const Profile = () => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-6 h-6 text-blue-400"
                     >
                       <path
                         strokeLinecap="round"
@@ -207,7 +208,7 @@ const Profile = () => {
                     </svg>
 
                     <p
-                      className="text-gray-500 text-sm md:text-[15px]
+                      className=" text-sm md:text-[15px]
                     "
                     >
                       Works At : {user?.worksAt}
