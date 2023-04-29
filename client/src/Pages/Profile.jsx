@@ -9,13 +9,14 @@ import { userWithUserIdQuery } from "../Helper/UserHelper";
 import { blogHelperQuery } from "../Helper/BlogHelper";
 import useTitle from "../hooks/useTitle";
 import { useGetOwnBlogQuery } from "../Features/blog/blogApiSlice";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 const Profile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const { userId } = useParams();
   const { id } = useAuth();
   const { theme } = useContext(ThemeContext);
-
+  useScrollToTop();
   const [openDialogue, setOpenDialogue] = useState(false);
 
   const [title, setTitle] = useState("");

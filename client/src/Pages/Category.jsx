@@ -7,13 +7,14 @@ import { useEffect, useState } from "react";
 
 import { blogHelperQuery } from "../Helper/BlogHelper";
 import useTitle from "../hooks/useTitle";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 const Category = () => {
   const { search } = useLocation();
   const [blogs, setBlogs] = useState([]);
   const params = new URLSearchParams(search);
   const cat = params.get("cat");
-
+  useScrollToTop()
   const { data, isLoading } = blogHelperQuery({
     cat: cat,
   });

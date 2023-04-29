@@ -14,8 +14,10 @@ import { blogwithUserIdQuery } from "../Helper/BlogHelper";
 
 import { NavContent } from "../utils/Dummy";
 import useTitle from "../hooks/useTitle";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 const CreateBlog = () => {
+  useScrollToTop()
   const navigate = useNavigate();
   const { id } = useParams();
 

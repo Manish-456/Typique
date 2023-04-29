@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import { blogHelperWithoutPolling } from "../Helper/BlogHelper";
 import useTitle from "../hooks/useTitle";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 
 const TopStoriesPage = () => {
+  useScrollToTop();
   const [blogs, setBlogs] = useState([]);
  
   const {data} = blogHelperWithoutPolling({topStories : true});

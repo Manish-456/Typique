@@ -1,18 +1,14 @@
-
 import Comment from "../components/Comment";
-import {
-  useLike_dislike_postMutation,
-} from "../Features/blog/blogApiSlice";
+import { useLike_dislike_postMutation } from "../Features/blog/blogApiSlice";
 import { Link, useParams } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import CommentLists from "../components/CommentLists";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { SocketContext } from "../context/socketContext";
 import DateFormat from "../utils/DateFormat";
 import { blogwithUserIdQuery } from "../Helper/BlogHelper";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
-import { API_URL } from "../config";
 import useTitle from "../hooks/useTitle";
 
 const Blog = () => {
@@ -20,15 +16,12 @@ const Blog = () => {
   const { id } = useAuth();
   const [edit, setEdit] = useState(false);
   const { socket } = useContext(SocketContext);
-  const [commentDetail, setCommentDetail] = useState(null)
+  const [commentDetail, setCommentDetail] = useState(null);
 
-  const {blog} = blogwithUserIdQuery(blogId);
+  const { blog } = blogwithUserIdQuery(blogId);
 
-  const {user} = userWithUserIdQuery(blog?.userId);
-  useEffect(() => {
-  window.scrollTo(0, 0);
-  
-  }, [])
+  const { user } = userWithUserIdQuery(blog?.userId);
+
   const [like_dislike_post] = useLike_dislike_postMutation();
   const handleLike_dislike = async () => {
     const payload = {
@@ -45,15 +38,17 @@ const Blog = () => {
     toast.success(data?.message);
   };
 
-  useTitle(`${blog?.title}`)
- 
+  useTitle(`${blog?.title}`);
+
   return (
     <>
-      
       <Toaster position="top-center" reverseOrder={false}></Toaster>
       <main className="max-w-7xl mx-auto px-6 md:px-4">
         <div className="p-4 mt-10">
-          <Link to={`/profile/${user?._id}`} className="flex md:flex-row gap-4 flex-col-reverse  md:gap-0 ">
+          <Link
+            to={`/profile/${user?._id}`}
+            className="flex md:flex-row gap-4 flex-col-reverse  md:gap-0 "
+          >
             {/*  */}
             <div className="left-container md:w-1/2 w-full ">
               <img
@@ -65,16 +60,15 @@ const Blog = () => {
             <div className=" right-container">
               <div className="shadow-lg flex p-4  flex-col gap-4 items-center">
                 <img
-                  src={
-                   user?.avatar
-                      ? `${user?.avatar}`
-                      : "/noavatar.jpg"
-                  }
+                  src={user?.avatar ? `${user?.avatar}` : "/noavatar.jpg"}
                   className="w-24 h-24 object-cover rounded-full"
                   alt=""
                 />
                 <h1>{user?.username}</h1>
-                <article dangerouslySetInnerHTML={{__html : user?.bio}} className="mb-4 text-[13px] md:text-[14px]"></article>
+                <article
+                  dangerouslySetInnerHTML={{ __html: user?.bio }}
+                  className="mb-4 text-[13px] md:text-[14px]"
+                ></article>
                 <p className="text-gray-400 font-bold">{user?.country}</p>
               </div>
             </div>
@@ -86,11 +80,7 @@ const Blog = () => {
           <div className="flex items-center gap-4">
             <Link to={`/profile/${user?._id}`}>
               <img
-                src={
-                  user?.avatar
-                    ? `${user?.avatar}`
-                    : "/noavatar.jpg"
-                }
+                src={user?.avatar ? `${user?.avatar}` : "/noavatar.jpg"}
                 className="w-16 h-16 object-cover rounded-full"
                 alt=""
               />
@@ -99,12 +89,13 @@ const Blog = () => {
               <h1 className="text-gray-400 font-semibold text-[15px]">
                 {user?.username}
               </h1>
-              <span className="text-sm text-gray-500 ">{DateFormat(blog?.createdAt)}</span>
-          
+              <span className="text-sm text-gray-500 ">
+                {DateFormat(blog?.createdAt)}
+              </span>
             </div>
           </div>
           <article
-          className="md:text-[15px] text-[14px]"
+            className="md:text-[15px] text-[14px]"
             dangerouslySetInnerHTML={{
               __html: blog?.desc,
             }}
@@ -119,7 +110,6 @@ const Blog = () => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  
                   onClick={handleLike_dislike}
                   className="w-5 h-5 cursor-pointer text-blue-800"
                 >
@@ -154,10 +144,17 @@ const Blog = () => {
                 className="mt-5  "
                 style={{
                   flex: 1,
-                
                 }}
               >
-                <Comment edit={edit} setEdit={setEdit} commentDetail={commentDetail} clientId={id} title={blog?.title} authorId={blog?.userId} blogId={blog?.id} />
+                <Comment
+                  edit={edit}
+                  setEdit={setEdit}
+                  commentDetail={commentDetail}
+                  clientId={id}
+                  title={blog?.title}
+                  authorId={blog?.userId}
+                  blogId={blog?.id}
+                />
               </div>
               {blog?.comment?.length > 0 && (
                 <div
@@ -167,7 +164,13 @@ const Blog = () => {
                   }}
                 >
                   {blog?.comment?.map((comment) => (
-                    <CommentLists key={comment?._id} setCommentDetail={setCommentDetail} blogId={blog?.id} setEdit={setEdit} comment={comment} />
+                    <CommentLists
+                      key={comment?._id}
+                      setCommentDetail={setCommentDetail}
+                      blogId={blog?.id}
+                      setEdit={setEdit}
+                      comment={comment}
+                    />
                   ))}
                 </div>
               )}
@@ -175,7 +178,6 @@ const Blog = () => {
           </div>
         </div>
       </main>
-
     </>
   );
 };
