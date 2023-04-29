@@ -17,7 +17,7 @@ let MailGenerator = new Mailgen({
   theme: "default",
   product: {
     name: "Typique",
-    link: "http://localhost:5173",
+    link: "https://typique.onrender.com",
   },
 });
 
