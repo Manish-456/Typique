@@ -1,5 +1,3 @@
-
-
 import { apiSlice } from "../../app/api/apiSlice";
 import { OTPVerify, logOut, setCredentials, setIsEmailSend } from "./authSlice";
 
@@ -11,14 +9,19 @@ export const AuthApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { ...credentials },
       }),
-   
-   
     }),
     sendMail: builder.mutation({
       query: (message) => ({
         url: "/api/auth/mailer",
         method: "POST",
         body: { ...message },
+      }),
+    }),
+    sendVerifyEmail: builder.mutation({
+      query: (credentials) => ({
+        url: `/api/auth/sendVerificationEmail`,
+        method: "POST",
+        body: { ...credentials },
       }),
     }),
     register: builder.mutation({
@@ -28,20 +31,14 @@ export const AuthApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
-   
-        await queryFulfilled;
+        const { data } = await queryFulfilled;
+
         const { username, email } = args;
 
         await dispatch(
-          AuthApiSlice.endpoints.sendMail.initiate({
-            username,
+          AuthApiSlice.endpoints.sendVerifyEmail.initiate({
             email,
-            text: `Hi ${username} Welcome to Typique. is a cutting-edge blogging app that allows users to create
-                    visually stunning posts using a wide range of unique typographic
-                    styles. With a user-friendly interface and powerful editing
-                    tools,Typique is the perfect platform for bloggers and writers
-                    looking to stand out in a crowded online space.`,
-            subject: "Registration Successful",
+            verificationCode: data?.verificationCode,
           })
         );
       },
@@ -52,13 +49,13 @@ export const AuthApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
     generateOTP: builder.query({
       query: (email) => ({
         url: `/api/auth/generateOTP/?email=${email}`,
         method: "GET",
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
-  
         try {
           const res = await queryFulfilled;
           let code = res.data.code;
@@ -87,7 +84,7 @@ export const AuthApiSlice = apiSlice.injectEndpoints({
       query: (code) => ({
         url: "/api/auth/verifyOTP/verify",
         method: "POST",
-        body: { code : code },
+        body: { code: code },
       }),
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         dispatch(OTPVerify(false));
@@ -113,12 +110,11 @@ export const AuthApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-            const {data} = await queryFulfilled;
-              
-            const {accessToken} = data;
-            dispatch(setCredentials({accessToken}))
-        } catch (err) {
-        }
+          const { data } = await queryFulfilled;
+
+          const { accessToken } = data;
+          dispatch(setCredentials({ accessToken }));
+        } catch (err) {}
       },
     }),
     logout: builder.mutation({
@@ -132,9 +128,7 @@ export const AuthApiSlice = apiSlice.injectEndpoints({
           dispatch(logOut());
           dispatch(OTPVerify(false));
           dispatch(apiSlice.util.resetApiState());
-        } catch (error) { 
-     
-        }
+        } catch (error) {}
       },
     }),
   }),
@@ -149,5 +143,5 @@ export const {
   useVerifyOTPMutation,
   useGenerateOTPQuery,
   useUserDetailQuery,
-  useSendMailMutation
+  useSendMailMutation,
 } = AuthApiSlice;

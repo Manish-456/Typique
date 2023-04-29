@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Toaster, toast } from "react-hot-toast";
 import {
   useLoginMutation,
   useRegisterMutation,
@@ -27,6 +27,13 @@ const AuthPoint = () => {
   const [incorrectPassword, setIncorrectPassword] = useState(false);
   const { socket } = useContext(SocketContext);
   const { id } = useAuth();
+  const {search} = useLocation();
+
+  const params = new URLSearchParams(search);
+
+ const verificationCode = params.get("verificationCode")
+ 
+
   // toggle remember me button
 
   const togglePersist = () => setPersist((prev) => !prev);
@@ -37,8 +44,10 @@ const AuthPoint = () => {
     e.preventDefault();
     if (!registered) {
       try {
-        const { error, data } = await login({ email, password });
+        const { error, data } = await login({ email, password, verificationCode });
+      
         if (error) {
+        toast.error(error?.data?.message)
           setErr(error);
           setPersist(false);
         } else if (data) {
@@ -51,7 +60,7 @@ const AuthPoint = () => {
       setIncorrectPassword(false);
       try {
         const { error, data } = await register({ email, password, username });
-
+     toast.success(data?.message)
         if (error) {
           setErr(error);
         } else if (data) {
@@ -80,85 +89,94 @@ const AuthPoint = () => {
   const inputClass = `border-b bg-transparent border-gray-600 p-2 outline-none`;
 
   return (
-    <div className="h-[100vh]">
-      <div className="glass p-4 transform w-[65%] md:w-[40%] lg:w-[20%]  mx-auto   translate-y-[30%] items-center">
-        <div className="flex flex-col gap-10">
-          <div className="mx-auto">
-            <img src="./Logo.svg" alt="" />
-          </div>
-          <form className="flex flex-col gap-8 w-full" onSubmit={handleSubmit}>
-            {registered && (
-              <input
-                type="text"
-                className={inputClass}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="John Doe *"
-              />
-            )}
-            <input
-              type="email"
-              className={inputClass}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="johndoe@example.com *"
-            />
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              className={inputClass}
-              placeholder="Password *"
-            />
-            {!registered && (
-              <label className="flex gap-2">
-                <input
-                  type="checkbox"
-                  id="persist"
-                  checked={persist}
-                  onChange={togglePersist}
-                />
-                Remember me
-              </label>
-            )}
-            <button
-              disabled={isLoading}
-              type="submit"
-              className="primary w-full"
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+
+      <div className="h-[100vh]">
+        <div className="glass p-4 transform w-[65%] md:w-[40%] lg:w-[20%]  mx-auto   translate-y-[30%] items-center">
+          <div className="flex flex-col gap-10">
+            <div className="mx-auto">
+              <img src="./Logo.svg" alt="" />
+            </div>
+            <form
+              className="flex flex-col gap-8 w-full"
+              onSubmit={handleSubmit}
             >
-              {" "}
-              {registered ? "register" : "Login"}
-            </button>
-          </form>
-          <div className="flex flex-col gap-4">
-            <p className="text-center text-sm text-red-500">
-              {err?.data?.message}
-            </p>
-            {!registered && incorrectPassword ? (
-              <p className="text-sm text-center font-bold text-gray-400">
-                Forgot Password ?{" "}
-                <Link
-                  to="/recovery"
-                  onClick={() => dispatch(setEmailCredential({ email }))}
-                  className="text-blue-500 cursor-pointer"
-                >
-                  Recover now !
-                </Link>
-              </p>
-            ) : (
-              <p className="text-sm text-center font-bold text-gray-400">
+              {registered && (
+                <input
+                  type="text"
+                  className={inputClass}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="John Doe *"
+                />
+              )}
+              <input
+                type="email"
+                className={inputClass}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="johndoe@example.com *"
+              />
+              <input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                className={inputClass}
+                placeholder="Password *"
+              />
+              {!registered && (
+                <label className="flex gap-2">
+                  <input
+                    type="checkbox"
+                    id="persist"
+                    checked={persist}
+                    onChange={togglePersist}
+                  />
+                  Remember me
+                </label>
+              )}
+              <button
+                disabled={isLoading}
+                type="submit"
+                className="primary w-full"
+              >
                 {" "}
-                {!registered ? "Don't have an account? " : "Have an account? "}
-                <span
-                  className="text-blue-700 font-bold text-[16px] cursor-pointer"
-                  onClick={() => setRegistered((prev) => !prev)}
-                >
-                  {" "}
-                  {!registered ? "register" : "Login"}
-                </span>
+                {registered ? "register" : "Login"}
+              </button>
+            </form>
+            <div className="flex flex-col gap-4">
+              <p className="text-center text-sm text-red-500">
+                {err?.data?.message}
               </p>
-            )}
+              {!registered && incorrectPassword ? (
+                <p className="text-sm text-center font-bold text-gray-400">
+                  Forgot Password ?{" "}
+                  <Link
+                    to="/recovery"
+                    onClick={() => dispatch(setEmailCredential({ email }))}
+                    className="text-blue-500 cursor-pointer"
+                  >
+                    Recover now !
+                  </Link>
+                </p>
+              ) : (
+                <p className="text-sm text-center font-bold text-gray-400">
+                  {" "}
+                  {!registered
+                    ? "Don't have an account? "
+                    : "Have an account? "}
+                  <span
+                    className="text-blue-700 font-bold text-[16px] cursor-pointer"
+                    onClick={() => setRegistered((prev) => !prev)}
+                  >
+                    {" "}
+                    {!registered ? "register" : "Login"}
+                  </span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

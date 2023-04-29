@@ -143,7 +143,7 @@ const BlogController = {
     const blogs = await Blog.aggregate(pipeLine);
 
     if (!blogs.length) {
-      return res.status(404).json({ message: "No blogs found" });
+      return res.status(404).json({ message: "No Blogs " });
     }
 
     return res.status(200).json(blogs);

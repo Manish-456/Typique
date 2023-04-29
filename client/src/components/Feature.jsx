@@ -1,13 +1,15 @@
 import React from "react";
 import {useNavigate} from 'react-router-dom'
 import useAuth from "../hooks/useAuth";
+import usePersist from "../hooks/usePersist";
 
 const Feature = () => {
   const navigate = useNavigate();
   const {id} = useAuth();
+  const [persist] = usePersist();
   
   const handleStart = () => {
-    navigate('/auth')
+  persist? navigate('/home') : navigate('/auth')
   }
  
   return (

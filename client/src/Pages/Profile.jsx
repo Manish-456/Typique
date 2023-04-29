@@ -205,8 +205,8 @@ const Profile = () => {
               {userId === id ? "Your Blogs" : "Blogs"}
             </h1>
             <div className="">
-              <div className="flex flex-wrap md:gap-2 gap-4">
-                {blogs?.map((blog) => (
+              {Array.isArray(blogs)? <div className="flex flex-wrap md:gap-2 gap-4">
+                { blogs?.map((blog) => (
                   <BlogCard
                     blogId={blog}
                     location={"/profile"}
@@ -217,8 +217,8 @@ const Profile = () => {
                     isLatest={false}
                     setOpenDialogue={setOpenDialogue}
                   />
-                ))}
-              </div>
+                )) }
+              </div> : <p className="text-xl text-center mt-4 font-bold">{blogs?.msg}</p>}
               {isLoading && "Loading..."}
             </div>
           </div>

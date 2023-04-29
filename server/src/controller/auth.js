@@ -4,6 +4,8 @@ const User = require("../model/User");
 const jwt = require("jsonwebtoken");
 const optGenerator = require("otp-generator");
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require("../config");
+const randomString = require(`randomstring`);
+
 const AuthController = {
   OTP: null,
   resetSession: false,
@@ -27,23 +29,33 @@ const AuthController = {
           "User with this email already registered"
         )
       );
+
     //? Hash the requested password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
+    const verificationCode = randomString.generate({ length: 10 });
     // ? Now create the new user
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
+      verificationCode: verificationCode,
+      isVerified: false,
     });
 
     // ? Check if the user has been created if created then Save the newly created user
 
     if (newUser) {
       await newUser.save();
-      return res.status(201).json({ message: `new User ${username} created` });
+
+      return res
+        .status(201)
+        .json({
+          message: `Please verify your email`,
+          verificationCode: verificationCode,
+        });
     }
+
     //  if not created send this error message
     else {
       return next(
@@ -64,25 +76,42 @@ const AuthController = {
     //? check if the user with this requested email exists or not
     const user = await User.findOne({ email });
     if (!user) return next(CustomErrorHandler.invalidCredentials());
-
+       
     //? check if the password matched with the original password or not
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) return next(CustomErrorHandler.invalidCredentials());
+   
 
+    //? check if the verification code matches and the user is not already verified
+
+    if ((req.body.verificationCode === user?.verificationCode) && !user.isVerified) {
+      await user.updateOne({
+        isVerified: true,
+        verificationCode : ""
+      }, {
+        new : true
+      });
+    }
+
+    if ((req.body.verificationCode !== user?.verificationCode) && !user.isVerified) {
+      return next(
+        CustomErrorHandler.CustomError(400,"Please verify your email first")
+      );
+    }
     const UserInfo = {
       id: user._id,
       username: user.username,
     };
-
-    // ? create a new Access Token
+    //? create a new Access Token
     const accessToken = jwt.sign({ UserInfo }, ACCESS_TOKEN, {
       expiresIn: "15m",
     });
-
-    // ? create a new Refresh Token
+    
+    //? create a new Refresh Token
     const refreshToken = jwt.sign({ UserInfo }, REFRESH_TOKEN, {
       expiresIn: "7d",
     });
+    
     res
       .cookie("token", refreshToken, {
         secure: true,
@@ -101,7 +130,7 @@ const AuthController = {
 
   async refresh(req, res, next) {
     const cookie = req.cookies;
-    
+
     if (!cookie.token) return next(CustomErrorHandler.unAuthorized());
     const refreshToken = cookie.token;
     jwt.verify(refreshToken, REFRESH_TOKEN, async (err, decoded) => {
@@ -109,7 +138,7 @@ const AuthController = {
 
       // ? Check if the user with that decoded token id exists or not
       const foundUser = await User.findById(decoded.UserInfo.id);
-      
+
       if (!foundUser) return next(CustomErrorHandler.unAuthorized());
       const UserInfo = {
         username: foundUser.username,
@@ -163,8 +192,8 @@ const AuthController = {
   */
   async verifyOTP(req, res, next) {
     const { code } = req.body;
-   
-   const otp = this.OTP;
+
+    const otp = this.OTP;
 
     if (parseInt(otp) === parseInt(code)) {
       this.OTP = null;
@@ -221,12 +250,14 @@ const AuthController = {
   async logOut(req, res, next) {
     const cookies = req.cookies;
     if (!cookies.token) return res.status(204);
-    res.clearCookie("token", {
-      secure: true,
-      httpOnly: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    }).json("Cleared the cookie and logout successfully");
+    res
+      .clearCookie("token", {
+        secure: true,
+        httpOnly: true,
+        sameSite: "None",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .json("Cleared the cookie and logout successfully");
   },
 };
 

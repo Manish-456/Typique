@@ -17,7 +17,7 @@ let MailGenerator = new Mailgen({
   theme: "default",
   product: {
     name: "Typique",
-    link: "https://mern-auth-jfvr.onrender.com",
+    link: "http://localhost:5173",
   },
 });
 
