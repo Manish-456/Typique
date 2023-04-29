@@ -37,7 +37,7 @@ const BlogCard = ({
    const truncatedText = useDOMParser(blog?.desc, 90)
   return (
     <div className={cardClass}>
-      <Link to={`/blog/${blog?.id}`} className="overflow-hidden rounded-xl w-full">
+      <Link to={`/blog/${blog?._id}`} className="overflow-hidden rounded-xl w-full">
         <img
           src={`${blog?.image}`}
                   onClick={handleView}
@@ -47,7 +47,7 @@ const BlogCard = ({
       </Link>
 
       <div className="card-content mt-4 p-1">
-        <Link to={`/blog/${blog?.id}`}>
+        <Link to={`/blog/${blog?._id}`}>
           <h1
             title={blog?.title}
             onClick={handleView}
