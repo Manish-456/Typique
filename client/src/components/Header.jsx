@@ -368,7 +368,7 @@ const Header = () => {
                 <div
                   className={`fixed h-[99%] md:h-80 overflow-auto cursor-grab  top-[4.1rem] md:top-[4.5rem] flex flex-col gap-4 right-0 md:right-32 p-4 ${theme?.secondary}`}
                 >
-                  <h1 className=" text-gray-600 font-bold text-center border-b p-2">
+                  <h1 className=" font-bold text-center border-b p-2">
                     Notifications
                   </h1>
                   {notifications?.map((notification) => (
