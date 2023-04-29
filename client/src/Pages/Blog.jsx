@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import CommentLists from "../components/CommentLists";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/socketContext";
 import DateFormat from "../utils/DateFormat";
 import { blogwithUserIdQuery } from "../Helper/BlogHelper";
@@ -25,7 +25,10 @@ const Blog = () => {
   const {blog} = blogwithUserIdQuery(blogId);
 
   const {user} = userWithUserIdQuery(blog?.userId);
-
+  useEffect(() => {
+  window.scrollTo(0, 0);
+  
+  }, [])
   const [like_dislike_post] = useLike_dislike_postMutation();
   const handleLike_dislike = async () => {
     const payload = {
