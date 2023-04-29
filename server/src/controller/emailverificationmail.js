@@ -30,7 +30,7 @@ const sendVerifcationEmail = async(email, verificationCode) => {
                 button: {
                     color: "#33b5e5",
                     text: "Verify Email",
-                    link: `http://localhost:5173/auth?email=${email}&verificationCode=${verificationCode}`,
+                    link: `https://typique.onrender.com/auth?email=${email}&verificationCode=${verificationCode}`,
                   },
             },
             outro : "If you did not create an account with Typique, please ignore this email."
