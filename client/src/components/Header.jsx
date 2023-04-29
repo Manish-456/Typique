@@ -185,7 +185,7 @@ const Header = () => {
           {/* Logo */}
           {showLogo && (
             <div
-              onClick={() =>{id ?  navigate("/home") : navigate("/")}}
+              onClick={() =>{navigate("/home")}}
               className="  lg:w-[15%] xl:w-[12%] w-[35%] sm:w-[19%]"
             >
               <img src="/Logo.svg" alt="" className={imgClass} />
