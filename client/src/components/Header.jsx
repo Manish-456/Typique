@@ -121,7 +121,7 @@ const Header = () => {
   ));
 
   const dropClass = `md:text-md text-[17px] font-semibold text-gray-500 hover:${theme.textColor}`;
-  const navClass = `text-gray-500 hover:text-gray-400 font-semibold md:text-[15px] text-[14px]`;
+  const navClass = ` hover:text-gray-400 font-semibold md:text-[15px] text-[14px]`;
   useEffect(() => {
     socket?.on("notify", (message) => {
       setArrivalMessage(message);
@@ -267,7 +267,7 @@ const Header = () => {
                 
                 <li className="relative " ref={dropDownRef}>
                   <button
-                    className="text-gray-500 flex gap-2 md:text-[15px] text-[14px] items-center hover:text-gray-400 font-semibold"
+                    className="flex gap-2 md:text-[15px] text-[14px] items-center hover:text-gray-400 font-semibold"
                     onClick={() => setOpen((prev) => !prev)}
                   >
                     Categories{" "}
