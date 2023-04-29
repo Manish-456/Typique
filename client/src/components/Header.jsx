@@ -85,7 +85,7 @@ const Header = () => {
   ToggleMenu(notificationRef, setOpenNotification);
 
   let catLinkClass =
-    "md:text-md hover:text-gray-400 text-[14px]  font-semibold text-gray-500";
+    "md:text-md hover:text-gray-400 text-[14px]  font-semibold ";
   let searchBox, divBox, img;
 
   if (windowSize[0] <= 640 && !showInput) {
