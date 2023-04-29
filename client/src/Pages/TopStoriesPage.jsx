@@ -26,6 +26,8 @@ const TopStoriesPage = () => {
 
   useTitle(`(${blogs?.length}) Top Stories`)
 
+  
+
 
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-4">
@@ -55,7 +57,7 @@ const TopStoriesPage = () => {
         
           <div className="flex gap-2 flex-wrap ">
           {
-            blogs?.map(blog => <BlogCard key={blog?.id} blogId={blog?.id} />)
+            blogs?.map(blog => <BlogCard key={blog?.id} blogId={blog} />)
           }
           </div>
           </div>
