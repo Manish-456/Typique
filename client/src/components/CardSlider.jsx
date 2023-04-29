@@ -2,16 +2,26 @@ import { Link } from "react-router-dom";
 import DateFormat from "../utils/DateFormat";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import useDOMParser from "../hooks/useDOMParser";
+import { useViewsMutation } from "../Features/blog/blogApiSlice";
 const CardSlider = ({ data }) => {
+  const [view] = useViewsMutation();
   let cardClass =
     "left-content w-[250px]  shadow-md p-2 rounded-sm overflow-hidden";
-    const {user} = userWithUserIdQuery(data?.userId);
-   const truncatedText = useDOMParser(data?.desc, 50)
+  const { user } = userWithUserIdQuery(data?.userId);
+  const truncatedText = useDOMParser(data?.desc, 50);
+
+  const handleView = async (blogId) => {
+
+    try {
+      await view({ blogId: blogId });
+    } catch (error) {}
+  };
   return (
     <div className={cardClass}>
       <Link to={`/blog/${data?.id}`} className="overflow-hidden rounded-xl">
         <img
-          src={`${data?.image}`|| "/noblogimg.png"}
+          onClick={() => handleView(data?.id)}
+          src={`${data?.image}` || "/noblogimg.png"}
           className="w-full h-36 object-cover rounded-xl  img-animation"
           alt=""
         />
@@ -21,15 +31,20 @@ const CardSlider = ({ data }) => {
         <Link to={`/blog/${data.id}`}>
           {" "}
           <h1
+            onClick={() => handleView(data?.id)}
             className="font-bold hover:underline cursor-pointer text-[14px] "
             style={{
               lineHeight: "17px",
             }}
           >
-            {data?.title?.length < 20 ? data?.title : `${data?.title?.slice(0, 30)}...`}
+            {data?.title?.length < 20
+              ? data?.title
+              : `${data?.title?.slice(0, 30)}...`}
           </h1>
         </Link>
-        <article className="text-[12px] md:text-[14px] text-gray-400 mt-4">{truncatedText}</article>
+        <article className="text-[12px] md:text-[14px] text-gray-400 mt-4">
+          {truncatedText}
+        </article>
 
         <div className="flex  gap-2 mt-4 mr-4">
           <svg
@@ -85,17 +100,18 @@ const CardSlider = ({ data }) => {
 
           <p className="text-sm text-gray-400">{data?.view?.length || 0}</p>
         </div>
-        <Link to={`/profile/${user?._id}`} className="flex cursor-pointer gap-4 mb-2 items-center mt-3">
+        <Link
+          to={`/profile/${user?._id}`}
+          className="flex cursor-pointer gap-4 mb-2 items-center mt-3"
+        >
           <img
-            src={
-              user?.avatar
-                ? `${user?.avatar}`
-                : "/noavatar.jpg"
-            }
+            src={user?.avatar ? `${user?.avatar}` : "/noavatar.jpg"}
             className=" w-[2rem] h-[2rem]  rounded-full object-cover "
           />
           <div>
-            <p className="mt-4  text-[12px]  md:text-[15px]">{user?.username}</p>
+            <p className="mt-4  text-[12px]  md:text-[15px]">
+              {user?.username}
+            </p>
             <span className="hover:text-blue-500 text-[10px] md:text-[12px]  cursor-pointer">
               {DateFormat(data?.createdAt)}
             </span>

@@ -13,6 +13,7 @@ import DateFormat from "../utils/DateFormat";
 import { blogwithUserIdQuery } from "../Helper/BlogHelper";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import { API_URL } from "../config";
+import useTitle from "../hooks/useTitle";
 
 const Blog = () => {
   const { blogId } = useParams();
@@ -40,6 +41,8 @@ const Blog = () => {
     }
     toast.success(data?.message);
   };
+
+  useTitle(`${blog?.title}`)
  
   return (
     <>

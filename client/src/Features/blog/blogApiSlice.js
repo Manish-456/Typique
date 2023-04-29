@@ -39,6 +39,7 @@ export const BlogApiSlice = apiSlice.injectEndpoints({
           },
         };
       },
+      
       transformResponse: (responseData) => {
         const loadedBlogs = responseData.map((blog) => {
           blog.id = blog._id;
@@ -56,6 +57,12 @@ export const BlogApiSlice = apiSlice.injectEndpoints({
           return [{ type: "Blog", id: "LIST" }];
         }
       },
+    }),
+    getOwnBlog : builder.query({
+      query : ({id}) => ({
+       url : `/api/blog/${id}`,
+       method : "GET"
+      })
     }),
 
     addNewBlogs: builder.mutation({
@@ -89,7 +96,7 @@ export const BlogApiSlice = apiSlice.injectEndpoints({
         },
       ],
     }),
-
+      
     views : builder.mutation({
     query : (args) => ({
       url : `/api/blog/view/${args?.blogId}`,
@@ -119,7 +126,7 @@ export const BlogApiSlice = apiSlice.injectEndpoints({
         url: `/api/blog/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "Blog", id: arg.id }],
+      invalidatesTags: (result, error, arg) => [{ type: "Blog", id: arg?.id }],
     }),
 
     createComment: builder.mutation({
@@ -177,6 +184,7 @@ export const BlogApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetBlogsQuery,
+  useGetOwnBlogQuery,
   useAddNewBlogsMutation,
   useLike_dislike_postMutation,
   useCreateCommentMutation,

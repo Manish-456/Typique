@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import { blogHelperWithoutPolling } from "../Helper/BlogHelper";
+import useTitle from "../hooks/useTitle";
 
 
 const TopStoriesPage = () => {
@@ -20,6 +21,8 @@ const TopStoriesPage = () => {
 
 
   }, [data]);
+
+  useTitle(`(${blogs?.length}) Top Stories`)
 
 
   return (

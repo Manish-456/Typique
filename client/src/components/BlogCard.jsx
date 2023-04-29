@@ -2,13 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { memo } from "react";
 import DateFormat from "../utils/DateFormat";
 import useAuth from "../hooks/useAuth";
-import { blogWithFixedSizeAndBlogIdQuery } from "../Helper/BlogHelper";
 import { useViewsMutation } from "../Features/blog/blogApiSlice";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import useDOMParser from "../hooks/useDOMParser";
 const BlogCard = ({
-  blogId,
-  size,
+  blogId : blog,
   setBlogId,
   location,
   setOpenDialogue,
@@ -22,11 +20,11 @@ const BlogCard = ({
 
   const handleView = async () => {
     try {
-      await views({ blogId: blogId });
+    await views({ blogId: blog?._id });
+    
     } catch (error) {}
   };
 
-  const { blog } = blogWithFixedSizeAndBlogIdQuery(size, blogId);
 
   let cardClass = "shadow-md p-2 rounded-sm overflow-hidden";
   if (pathname === "/home") {
@@ -42,6 +40,7 @@ const BlogCard = ({
       <Link to={`/blog/${blog?.id}`} className="overflow-hidden rounded-xl w-full">
         <img
           src={`${blog?.image}`}
+                  onClick={handleView}
           className="w-full h-64 object-cover rounded-xl  img-animation"
           alt=""
         />
@@ -152,7 +151,7 @@ const BlogCard = ({
                     onClick={() => {
                       setOpenDialogue(true);
                       setTitle(blog?.title);
-                      setBlogId(blog?.id);
+                      setBlogId(blog?._id);
                     }}
                   >
                     <path
@@ -162,7 +161,7 @@ const BlogCard = ({
                     />
                   </svg>
                 </div>
-                <Link to={`/blog/update/${blog?.id}`}>
+                <Link to={`/blog/update/${blog?._id}`}>
                   <div
                     title="Edit"
                     className="hover:bg-gray-300 hover:text-green-800 p-2 rounded-full"

@@ -1,24 +1,34 @@
 import React from "react";
 import { blogWithFixedSizeAndBlogIdQuery } from "../Helper/BlogHelper";
-
+import {Link} from 'react-router-dom';
 import { userWithUserIdQuery } from "../Helper/UserHelper";
+import { useViewsMutation } from "../Features/blog/blogApiSlice";
 
 const StoryList = ({ blogId, size = null }) => {
   const { blog } = blogWithFixedSizeAndBlogIdQuery(size, blogId);
   const { user } = userWithUserIdQuery(blog?.userId);
+  const [view] = useViewsMutation();
+ const handleView = async() => {
+  try {
+    await view({blogId})
+  } catch (error) {
+    
+  }
+ }
   return (
     <>
       {blog && (
-        <div className="flex  items-start gap-4 shadow-md ">
+        <Link to={`/blog/${blogId}`}  className="flex  items-start gap-4 shadow-md ">
           <img
+           onClick={handleView}
             src={blog?.image ? `${blog?.image}` : "/noblogimg.png"}
-            alt=""
+            alt={blog?.title}
             className="w-[4.5rem] h-[5rem] object-cover"
           />
 
           <div>
             <div className="flex flex-col lg:flex gap-2">
-              <h1 className="text-[12px] md:text-[14px] pr-1  font-semibold">
+              <h1 className="text-[12px] md:text-[14px] pr-1  font-semibold" onClick={handleView}>
                 {blog?.title}
               </h1>
               <div className="flex gap-2 ">
@@ -101,7 +111,7 @@ const StoryList = ({ blogId, size = null }) => {
               </small>
             </div>
           </div>
-        </div>
+        </Link>
       )}
     </>
   );

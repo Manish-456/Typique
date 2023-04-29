@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import CardSlider from "./CardSlider";
 import { useRef } from "react";
 import Scroll from "../utils/Scroll";
-import { useGetBlogsQuery } from "../Features/blog/blogApiSlice";
+
+import { blogHelperQuery } from "../Helper/BlogHelper";
 const Latest = () => {
   const carouselRef = useRef(null);
   const width = Scroll(carouselRef);
   
-  const {data} = useGetBlogsQuery({sort : true});
+  const {data} = blogHelperQuery({sort : true});
 
   const blogs = data?.ids?.map(blogId => data.entities[blogId]);
   

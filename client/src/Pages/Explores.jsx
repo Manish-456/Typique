@@ -1,12 +1,13 @@
 import BlogCard from "../components/BlogCard";
 import { useLocation } from "react-router-dom";
 import { useGetBlogsQuery } from "../Features/blog/blogApiSlice";
+import useTitle from "../hooks/useTitle";
 
 const Explores = () => {
   const location = useLocation();
   const params = new URLSearchParams(location?.search);
   const query = params.get("blog");
-  
+  query ? useTitle(query) : useTitle("Explore")
   const { data, error } = useGetBlogsQuery(
     query
       ? {
@@ -14,6 +15,10 @@ const Explores = () => {
         }
       : "blogLists"
   );
+  
+  const blogs = data?.ids?.map((id) => {
+    return data?.entities[id]
+  })
 
   return (
     <>
@@ -52,7 +57,7 @@ const Explores = () => {
                   {error?.data?.message}
                 </p>
               ) : (
-                data?.ids?.map((id) => (
+                blogs?.map((id) => (
                   <BlogCard
                     key={id}
                     blogId={id}

@@ -41,7 +41,7 @@ const EditProfile = ({ setOpenDrawer, userInfo }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const {data} =   await updateUser({
+   await updateUser({
       ...(file && { avatar: file }),
       id,
       username,

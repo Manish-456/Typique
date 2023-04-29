@@ -27,20 +27,23 @@ const uploadImage = (image, imageId) => {
         if (result && result.secure_url) {
           return resolve(result.secure_url); 
         } else {
-          return reject({ message: error.message });
+          return reject({ message: error?.message });
         }
       }
     );
   });
 };
 
-const deleteImage = (public_id) => {
+const deleteImage = (imageId) => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.destroy(public_id, (error, result) => {
-      if (result && result.result === "ok") {
+  
+    cloudinary.uploader.destroy(imageId, (error, result) => {
+  
+      
+      if (result && result?.result === "ok") {
         return resolve(true);
       } else {
-        return reject({ message: error.message });
+        return reject({ message: error?.message });
       }
     });
   });

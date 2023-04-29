@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import DateFormat from "../utils/DateFormat"
 import { userWithUserIdQuery } from "../Helper/UserHelper"
 import {  blogwithUserIdQuery } from "../Helper/BlogHelper"
-import { API_URL } from "../config"
+
 
 
 
@@ -13,7 +13,7 @@ const {blog} = blogwithUserIdQuery(notification?.blogId)
   return (
     <div className='flex   cursor-pointer w-[18rem]'>
       <Link to={`/profile/${user?.id}`} className="w-[50%]" >
-      <img src={user?.avatar ? `${API_URL}/images/${user?.avatar}` : "/noavatar.jpg"} alt=""  className='w-10 h-10 rounded-full'/>
+      <img src={user?.avatar ? `${user?.avatar}` : "/noavatar.jpg"} alt=""  className='w-10 h-10 rounded-full'/>
       </Link>
       <Link className="w-full -ml-10" to={`/blog/${notification?.blogId}`}>
         <p className='text-sm '> 

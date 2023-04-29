@@ -239,26 +239,42 @@ const BlogController = {
    * @route DELETE /api/blog/:id
    * @access private
    */
-
+  async getOwnBlog(req, res, next) {
+    const { id } = req.params;
+    const blog = await Blog.find({ userId: id }).sort({createdAt : -1});
+    if (!blog.length) {
+      return res.status(200).json({ msg: "Blog not found" });
+    }
+    return res.status(200).json(blog);
+  },
   async deleteBlog(req, res, next) {
     const { id } = req.params;
     if (!id) return next(CustomErrorHandler.CustomError(400, "Bad Request"));
-    const blog = await Blog.findById(id);
+    try {
+      const blog = await Blog.findById(id);
 
-    if (blog.userId.toString() === req.id) {
-      const notification = await Notification.find({ title: blog?.title });
-      Promise.all(
-        notification.map(async (notify) => {
-          return await Notification.findOneAndDelete({ title: notify?.title });
-        })
-      );
+      if (blog.userId.toString() === req.id) {
+        const notification = await Notification.find({ title: blog?.title });
+        Promise.all(
+          notification.map(async (notify) => {
+            return await Notification.findOneAndDelete({
+              title: notify?.title,
+            });
+          })
+        );
 
-      await deleteImage(blog?.image_key);
+        await deleteImage(blog?.image_key);
 
-      await Blog.findByIdAndDelete(id);
-      return res.status(200).json({ message: "Blog deleted 💯" });
-    } else {
-      return res.status(400).json({ message: "You can delete your own blog" });
+        await Blog.findByIdAndDelete(id);
+
+        return res.status(200).json({ message: "Blog deleted 💯" });
+      } else {
+        return res
+          .status(400)
+          .json({ message: "You can delete your own blog" });
+      }
+    } catch (error) {
+      return res.json({ error: error });
     }
   },
   /**

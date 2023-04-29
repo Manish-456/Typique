@@ -7,8 +7,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import BlogDialogue from "../components/BlogDialogue";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import { blogHelperQuery } from "../Helper/BlogHelper";
-
-import { API_URL } from "../config";
+import useTitle from "../hooks/useTitle";
+import { useGetOwnBlogQuery } from "../Features/blog/blogApiSlice";
 
 const Profile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -20,47 +20,32 @@ const Profile = () => {
 
   const [title, setTitle] = useState("");
   const [blogId, setBlogId] = useState(null);
-  const [blogs, setBlogs] = useState([]);
 
   const [user, setUser] = useState(null);
-
   let { user: userDetail } = userWithUserIdQuery(userId);
+  const { data: blogs, isLoading } = useGetOwnBlogQuery(
+    { id: userId },
+    {
+      pollingInterval: 6000,
+      refetchOnFocus: true,
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   useEffect(() => {
     setUser({ ...userDetail });
   }, [userDetail]);
 
-  const { data, isLoading } = blogHelperQuery({ sort: true });
-
-  useEffect(() => {
-    if (data) {
-      const newBlogIds = [...data.ids];
- 
-
-      const newBlogs = newBlogIds.map((id) => data?.entities[id]);
-      setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
-    }
-    return () =>  setBlogs([])
-
-
-  }, [data]);
-
-
-
-  const ownBlog = blogs?.filter((blog) => {
-    return blog?.userId === userId;
-  });
+  useTitle(`(${blogs?.length}) ${user?.username}`);
 
   return (
     <div className={openDrawer ? `${theme.primary}` : "white"}>
       <div className="max-w-7xl mx-auto px-6 md:px-4 relative">
         {openDrawer && (
           <div
-   
             className="  
        w-full md:w-1/2 mx-auto  sticky top-20 bottom-0  z-10 bg-white"
-        
-        >
+          >
             <EditProfile userInfo={user} setOpenDrawer={setOpenDrawer} />
           </div>
         )}
@@ -83,14 +68,9 @@ const Profile = () => {
         >
           <div className="flex md:flex-row flex-col gap-4">
             <div className="left-container  rounded-xl flex gap-4 flex-col items-center justify-center">
-              <div >
+              <div>
                 <img
-                
-                  src={
-                    user?.avatar
-                      ? `${user?.avatar}`
-                      : "/noavatar.jpg"
-                  }
+                  src={user?.avatar ? `${user?.avatar}` : "/noavatar.jpg"}
                   className="w-32 h-32 shadow-xl object-cover  rounded-full"
                   alt=""
                 />
@@ -99,9 +79,10 @@ const Profile = () => {
                 <h1 className="text-xl md:text-2xl font-bold text-gray-500">
                   {user?.username}
                 </h1>
-                <article dangerouslySetInnerHTML={{__html : user?.bio}} className="text-sm font-semibold text-gray-400">
-                  
-                </article>
+                <article
+                  dangerouslySetInnerHTML={{ __html: user?.bio }}
+                  className="text-sm font-semibold text-gray-400"
+                ></article>
                 {user?.webLink && (
                   <div className="flex justify-center gap-2">
                     <svg
@@ -224,13 +205,13 @@ const Profile = () => {
             </h1>
             <div className="">
               <div className="flex flex-wrap md:gap-2 gap-4">
-                {ownBlog?.map((blog) => (
+                {blogs?.map((blog) => (
                   <BlogCard
-                    blogId={blog?.id}
+                    blogId={blog}
                     location={"/profile"}
                     isTrending={false}
                     setTitle={setTitle}
-                    key={blog?.id}
+                    key={blog?._id}
                     setBlogId={setBlogId}
                     isLatest={false}
                     setOpenDialogue={setOpenDialogue}

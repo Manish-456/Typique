@@ -13,6 +13,7 @@ import useAuth from "../hooks/useAuth";
 import { blogwithUserIdQuery } from "../Helper/BlogHelper";
 
 import { NavContent } from "../utils/Dummy";
+import useTitle from "../hooks/useTitle";
 
 const CreateBlog = () => {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ const CreateBlog = () => {
       }
     }
   };
-
+  useTitle(`${ id ? "Update" : "Create"} a blog`)
   return (
     <>
       <Toaster position="top-center" reverseOrder={false}></Toaster>

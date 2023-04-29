@@ -1,7 +1,7 @@
 import StoryList from "./StoryList";
 import { blogHelperQuery } from "../Helper/BlogHelper";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const TopStories = () => {
   const navigate = useNavigate();
   const { data } = blogHelperQuery({ topStories: true });
@@ -11,11 +11,11 @@ const TopStories = () => {
   return (
     <>
       {data?.ids?.slice(0, 3).map((blogId) => (
-        <StoryList key={blogId} size={3} blogId={blogId} />
+        <Link key={blogId} to={`/blog/${blogId}`}><StoryList  size={3} blogId={blogId} /></Link>
       ))}
-      <h1 className="cursor-pointer hover:underline" onClick={handleStories}>
+     {data && <h1 className="cursor-pointer hover:underline" onClick={handleStories}>
         See More...
-      </h1>
+      </h1>}
     </>
   );
 };

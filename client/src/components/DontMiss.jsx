@@ -4,7 +4,7 @@ import TopStories from "./TopStories";
 import { useContext, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
-import { blogHelperQuery } from "../Helper/BlogHelper";
+import { blogHelperQuery, blogWithFixedSizeAndBlogIdQuery } from "../Helper/BlogHelper";
 import ToggleMenu from "../utils/ToggleMenu";
 import { NavContent } from "../utils/Dummy";
 
@@ -15,18 +15,22 @@ const DontMiss = () => {
   const [cat, setCat] = useState("");
   const {theme} = useContext(ThemeContext)
  let linkClass = "text-gray-400 md:text-[16px] text-sm font-semibold hover:text-gray-800 cursor-pointer"
- const {data, isLoading} = blogHelperQuery({size : 1})
+ const {data, isLoading} = blogHelperQuery({size : 1});
   
   ToggleMenu(moreRef, setShowOptions)
- 
+
+  const blogs = data?.ids?.map(blogId => {
+    return data?.entities[blogId]
+  })
+
   let content;
   if (isLoading) {
     <p>Loading...</p>;
   } else if (data && data.ids) {
-    content = data.ids?.map((blogId) => (
+    content = blogs.map((blog) => (
       <BlogCard
-      key={blogId}
-        blogId={blogId}
+      key={blog?._id}
+        blogId={blog}
         cat={cat}
         isTrending={false}
         size={1}

@@ -26,5 +26,6 @@ export const blogWithFixedSizeAndBlogIdQuery = (size, blogId) => {
     selectFromResult: (result) => ({
       blog: result?.data?.entities[blogId],
     }),
+
   });
 };

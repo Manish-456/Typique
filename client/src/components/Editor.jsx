@@ -11,11 +11,7 @@ const Editor = ({placeholder, value, setValue}) => {
         useMemo(() => ({
           readonly : false,
           placeholder : placeholder || "Start typing",
-  
-          style: {
-            backgroundColor : `${themes === "light" ? "white" : "white"}`,
-            color : `${themes === "light" ? "black" : "white"}`
-        },
+ 
           }), [value])
     
  return (

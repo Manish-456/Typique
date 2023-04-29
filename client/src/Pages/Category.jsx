@@ -6,6 +6,7 @@ import BlogCard from "../components/BlogCard";
 import { useEffect, useState } from "react";
 
 import { blogHelperQuery } from "../Helper/BlogHelper";
+import useTitle from "../hooks/useTitle";
 
 const Category = () => {
   const { search } = useLocation();
@@ -16,18 +17,20 @@ const Category = () => {
   const { data, isLoading } = blogHelperQuery({
     cat: cat,
   });
-
+  
   useEffect(() => {
     if (data) {
       const newBlogIds = [...data?.ids];
-
+      
       const newBlogs = newBlogIds?.map((id) => data?.entities[id]);
       setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
     }
     return () => setBlogs([]);
   }, [data]);
-
+  
+  
   let result = subTitle?.filter((item) => item?.name === cat?.toLowerCase());
+  useTitle(`(${blogs?.length}) ${cat}`)
 
   return (
     <>
@@ -74,7 +77,7 @@ const Category = () => {
               <p>Loading...</p>
             ) : (
               blogs?.map((blog) => (
-                <BlogCard blog={blog} blogId={blog?.id} key={blog?.id} />
+                <BlogCard  blogId={blog} key={blog?.id} />
               ))
             )}
           </div>
