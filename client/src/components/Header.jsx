@@ -120,7 +120,7 @@ const Header = () => {
     </li>
   ));
 
-  const dropClass = `md:text-md text-[17px] font-semibold text-gray-500 hover:${theme.textColor}`;
+  const dropClass = `md:text-md text-[17px] font-semibold ${theme.textColor} hover:text-gray-500`;
   const navClass = ` hover:text-gray-400 font-semibold md:text-[15px] text-[14px]`;
   useEffect(() => {
     socket?.on("notify", (message) => {
