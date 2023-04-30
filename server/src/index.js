@@ -27,17 +27,28 @@ const io = require("socket.io")(httpServer, {
 
 io.on("connection", (socket) => {
   socket.on("register", (user) => {
-    userSockets[user.id] = socket.id;
+    if (!userSockets[user.id]) {
+      userSockets[user.id] = [];
+    }
+    userSockets[user.id].push(socket.id);
   });
 
   socket.on("send-notification", (data) => {
-    socket.broadcast.to(userSockets[data?.authorId]).emit("notify", data);
+    if (userSockets[data?.authorId]) {
+      userSockets[data.authorId].forEach((socketId) => {
+        socket.broadcast.to(socketId).emit("notify", data);
+      });
+    }
   });
 
   socket.on("disconnect", () => {
-    for (const [userId, socketObj] of Object.entries(userSockets)) {
-      if (socketObj.id === socket.id) {
-        delete userSockets[userId];
+    for (const [userId, socketIds] of Object.entries(userSockets)) {
+      const index = socketIds.indexOf(socket.id);
+      if (index !== -1) {
+        socketIds.splice(index, 1);
+        if (socketIds.length === 0) {
+          delete userSockets[userId];
+        }
         break;
       }
     }
