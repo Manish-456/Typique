@@ -1,4 +1,4 @@
-const {EMAIL, PASSWORD} = require('../config');
+const {EMAIL, PASSWORD, FRONTEND_DOMAIN} = require('../config');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const emailValidator = require('email-validator');
@@ -17,7 +17,7 @@ let MailGenerator = new Mailgen({
     theme : "default",
     product : {
         name : "Typique",
-        link : "http://localhost:5173/auth"
+        link : `${FRONTEND_DOMAIN}/auth`
     }
 })
 
@@ -30,7 +30,7 @@ const sendVerifcationEmail = async(email, verificationCode) => {
                 button: {
                     color: "#33b5e5",
                     text: "Verify Email",
-                    link: `https://typique.onrender.com/auth?email=${email}&verificationCode=${verificationCode}`,
+                    link: `${FRONTEND_DOMAIN}/auth?email=${email}&verificationCode=${verificationCode}`,
                   },
             },
             outro : "If you did not create an account with Typique, please ignore this email."

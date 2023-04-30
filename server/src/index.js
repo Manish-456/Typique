@@ -4,7 +4,7 @@ require("express-async-errors");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const cookieParser = require("cookie-parser");
-const { MONGO_URI } = require("./config");
+const { MONGO_URI, FRONTEND_DOMAIN } = require("./config");
 const connectDB = require("./config/connectDB");
 const { default: mongoose } = require("mongoose");
 const errorHandler = require("./middleware/errorHandler");
@@ -21,7 +21,7 @@ const userSockets = {};
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: `https://typique.onrender.com`,
+    origin: FRONTEND_DOMAIN,
   },
 });
 

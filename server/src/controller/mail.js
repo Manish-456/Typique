@@ -1,4 +1,4 @@
-const {EMAIL, PASSWORD} = require('../config')
+const {EMAIL, PASSWORD, FRONTEND_DOMAIN} = require('../config')
 
 const nodeMailer = require("nodemailer");
 const Mailgen = require("mailgen");
@@ -17,7 +17,7 @@ let MailGenerator = new Mailgen({
   theme: "default",
   product: {
     name: "Typique",
-    link: "https://typique.onrender.com",
+    link: FRONTEND_DOMAIN,
   },
 });
 

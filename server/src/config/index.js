@@ -9,6 +9,7 @@ const {
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
   CLOUDINARY_CLOUD_NAME,
+  FRONTEND_DOMAIN
 } = process.env;
 
 module.exports = {
@@ -22,4 +23,5 @@ module.exports = {
   CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
+  FRONTEND_DOMAIN
 };

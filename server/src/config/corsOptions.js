@@ -1,4 +1,6 @@
-const allowedOrigin = ["https://typique.onrender.com"];
+const { FRONTEND_DOMAIN } = require(".");
+
+const allowedOrigin = [FRONTEND_DOMAIN];
 
 const corsOptions = {
     origin : (origin, callback) => {
