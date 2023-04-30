@@ -37,7 +37,7 @@ const Profile = () => {
     setUser({ ...userDetail });
   }, [userDetail]);
 
-  useTitle(`(${blogs?.length} || 0) ${user?.username}`);
+  useTitle(`(${blogs?.length || 0}) ${user?.username}`);
 
   return (
     <div className={openDrawer ? `${theme.primary}` : "white"}>
