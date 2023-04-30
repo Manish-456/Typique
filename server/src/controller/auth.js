@@ -195,7 +195,7 @@ const AuthController = {
 
     const otp = this.OTP;
 
-    if (parseInt(otp) === parseInt(code)) {
+    if (otp === code) {
       this.OTP = null;
       this.resetSession = true;
       return res.status(200).json({ message: "Your OTP has been verified" });

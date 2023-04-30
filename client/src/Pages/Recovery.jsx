@@ -6,12 +6,12 @@ import {
 import { Toaster, toast } from "react-hot-toast";
 
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { confirmEmail, selectEmailAddress, setOTPVerifyStatus } from "../Features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { OTPVerify, selectEmailAddress, setOTPVerifyStatus } from "../Features/auth/authSlice";
 const Recovery = () => {
+  const dispatch = useDispatch();
   const [code, setCode] = useState("");
   const [verifyOTP] = useVerifyOTPMutation();
-  const isEmailSend = useSelector(confirmEmail);
   const OTPSuccess = useSelector(setOTPVerifyStatus);
   const navigate = useNavigate();
 
@@ -22,7 +22,11 @@ const Recovery = () => {
 
   useEffect(() => {
     toast.success(<b>OTP has been sent to your email.</b>);
-  }, [isEmailSend]);
+  
+    return () => dispatch(OTPVerify(false));
+  }, []);
+
+
 
   function resendOTP() {
     generateOTP.refetch();
@@ -31,8 +35,12 @@ const Recovery = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await verifyOTP(code);
-    } catch (error) {}
+     const {data, error} =  await verifyOTP(code);
+     
+   data ? toast.success(data?.message) : toast.error(error?.data?.message)
+    } catch (error) {
+      
+    }
   };
 
   if (OTPSuccess)
