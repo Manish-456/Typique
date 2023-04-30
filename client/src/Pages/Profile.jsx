@@ -6,7 +6,6 @@ import BlogCard from "../components/BlogCard";
 import { ThemeContext } from "../context/ThemeContext";
 import BlogDialogue from "../components/BlogDialogue";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
-import { blogHelperQuery } from "../Helper/BlogHelper";
 import useTitle from "../hooks/useTitle";
 import { useGetOwnBlogQuery } from "../Features/blog/blogApiSlice";
 import useScrollToTop from "../hooks/useScrollToTop";

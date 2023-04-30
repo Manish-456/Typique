@@ -10,8 +10,10 @@ import DateFormat from "../utils/DateFormat";
 import { blogwithUserIdQuery } from "../Helper/BlogHelper";
 import { userWithUserIdQuery } from "../Helper/UserHelper";
 import useTitle from "../hooks/useTitle";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 const Blog = () => {
+  useScrollToTop();
   const { blogId } = useParams();
   const { id } = useAuth();
   const [edit, setEdit] = useState(false);
