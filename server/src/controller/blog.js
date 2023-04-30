@@ -38,7 +38,7 @@ async function like_unlike_Post(req, res, next) {
         likes: req.id,
       },
     });
-    await Notification.findOneAndDelete({ title });
+    await Notification.findOneAndDelete({clientId, title, isLiked: true });
     return res
       .status(200)
       .json({ isLiked: false, message: "You dislike this post" });
@@ -241,7 +241,7 @@ const BlogController = {
    */
   async getOwnBlog(req, res, next) {
     const { id } = req.params;
-    const blog = await Blog.find({ userId: id }).sort({createdAt : -1});
+    const blog = await Blog.find({ userId: id }).sort({ createdAt: -1 });
     if (!blog.length) {
       return res.status(200).json({ msg: "Blog not found" });
     }
