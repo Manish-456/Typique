@@ -102,6 +102,7 @@ const Header = () => {
       await logout();
       navigate("/auth");
       localStorage.removeItem("theme")
+      socket.close();
     } catch (error) {}
   };
   let imgClass = " w-[50px] md:w-[100px]";
@@ -141,7 +142,7 @@ const Header = () => {
       setNotifications((prev) => [...prev, arrivalMessage]);
       setNotificationCount((prev) => [...prev, arrivalMessage]);
       localStorage.setItem(id, notificationCount.length + 1);
-      return () => localStorage.setItem(id, notificationCount.length + 1);
+      // return () => localStorage.setItem(id, notificationCount.length + 1);
     }
   }, [arrivalMessage]);
 
