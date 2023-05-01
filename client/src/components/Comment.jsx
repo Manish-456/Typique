@@ -48,6 +48,7 @@ const Comment = ({
       try {
         await createComment({ ...payload, text: value });
         socket?.emit("send-notification", payload);
+        setValue("")
       } catch (error) {}
     }
   };
