@@ -344,7 +344,7 @@ const BlogController = {
       commentId: req.body.commentId,
     });
 
-    if (!commentIndex === -1) {
+    if (commentIndex === -1) {
       return next(CustomErrorHandler.notFound("Comment"));
     }
     blog.comment.splice(commentIndex, 1);
