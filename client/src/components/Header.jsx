@@ -141,7 +141,7 @@ const Header = () => {
     if (arrivalMessage) {
       setNotifications((prev) => [...prev, arrivalMessage]);
       setNotificationCount((prev) => [...prev, arrivalMessage]);
-      localStorage.setItem(id, notificationCount.length + 1);
+      localStorage.setItem(id, notificationCount.length);
       // return () => localStorage.setItem(id, notificationCount.length + 1);
     }
   }, [arrivalMessage]);
