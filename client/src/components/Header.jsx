@@ -406,7 +406,7 @@ const Header = () => {
               <ul
                 className={`absolute ${
                   theme.secondary
-                } md:w-[150px] w-[130px] -left-10 md:left-[-6rem] top-[60px] p-4 shadow-xl  ${
+                } md:w-[150px] w-[130px] -left-10 md:left-[-7rem] top-[60px] p-4 shadow-xl  ${
                   downMenu ? "block" : "hidden"
                 }`}
               >

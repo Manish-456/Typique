@@ -24,7 +24,7 @@ const Explores = () => {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-6 md:px-4">
+      <div className="max-w-7xl mx-auto px-1 md:px-4">
         <div className="mt-10">
           <div className="p-4 mt-10">
             <div className="flex items-center justify-between md:flex-row flex-col gap-10">

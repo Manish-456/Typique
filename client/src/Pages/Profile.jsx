@@ -40,7 +40,7 @@ const Profile = () => {
 
   return (
     <div className={openDrawer ? `${theme.primary}` : "white"}>
-      <div className="max-w-7xl mx-auto px-6 md:px-4 relative">
+      <div className="max-w-7xl mx-auto px-1 md:px-4 relative">
         {openDrawer && (
           <div
             className="  
