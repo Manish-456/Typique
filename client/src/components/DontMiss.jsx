@@ -69,7 +69,7 @@ const DontMiss = () => {
                   More
                 </button>
                 {showOptions && (
-                  <ul className={`absolute ${theme.secondary}  top-[2.2rem] z-10 w-[200px] shadow-lg md:-left-24 p-4 -left-32`}>
+                  <ul className={`absolute ${theme.secondary}  top-[2.2rem] z-10 w-[200px] shadow-lg md:-left-24 p-4 -left-[9rem]`}>
                    
                    {NavContent?.slice(3).map((nav) => <li className="hover:text-gray-800 md:text-[16px] text-sm" onClick={() => setCat(nav?.category)}>{nav?.link}</li>)}
                    
