@@ -106,7 +106,7 @@ const CreateBlog = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <div className="flex flex-col  gap-8 mt-10 md:max-w-[50%] max-w-7xl mx-auto px-6 md:px-4">
+      <div className="flex flex-col  gap-8 mt-10 md:max-w-[50%] max-w-7xl mx-auto px-1 md:px-4">
         <h1 className="text-2xl text-gray-400 text-center">
           {id ? "Update" : "Create"} A Blog
         </h1>

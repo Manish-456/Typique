@@ -8,7 +8,7 @@ const Welcome = () => {
     <>
     
     <Header />
-    <div className=" max-w-7xl mx-auto px-6 md:px-4">
+    <div className=" max-w-7xl mx-auto px-1 md:px-4">
 
       <Feature />
 

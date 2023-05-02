@@ -45,7 +45,7 @@ const Blog = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <main className="max-w-7xl mx-auto px-6 md:px-4">
+      <main className="max-w-7xl mx-auto px-1 md:px-4">
         <div className="p-4 mt-10">
           <Link
             to={`/profile/${user?._id}`}
